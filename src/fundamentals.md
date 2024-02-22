@@ -1,11 +1,11 @@
 {{#include ./include/header-none.md}}
 
-# Game Engine Fundamentals
+# 游戏引擎基础
 
 This chapter covers the fundamentals of using Bevy as a game engine.
 
 You are expected to be familiar with Bevy programming in general. For that,
-see the [Bevy Programming Framework][chapter::programming] chapter.
+see the [Bevy 编程框架][chapter::programming] chapter.
 
 The topics covered in this chapter are applicable to all projects that want
 to use Bevy as more than just an ECS library. If you are making a game or

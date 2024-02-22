@@ -1,26 +1,16 @@
 {{#include ./include/header-none.md}}
 
-# Bevy Tutorials
+# Bevy 教程
 
-This chapter of the book contains tutorials. Tutorials teach you things in a
-logical order from start to finish. If you are looking for something to guide
-you through learning Bevy, maybe some of them will be useful to you.
+这一章节是按照逻辑顺序从开始到结束教你的教程。如果你在学习bevy时需要新手引导，这将非常有用。
 
-The rest of this book is designed to be used as a reference, so you can jump
-around to specific topics you want to learn about.
+本书的其余部分旨在用作参考，请随意跳转。
 
-The first tutorial in this chapter, [Guided Tour][cbtut::guide], simply
-organizes all the topics in this book in an order suggested for learning, from
-the basics to advanced concepts. You can use it as an alternative to the main
-table of contents (the left side bar), if you are just learning Bevy and don't
-know how to progress. If you are new to Bevy, you can start here to find your
-way around.
+[新手指引][cbtut::guide]简单组织了一些建议你按照顺序学习的内容，涵盖了初级到高级的概念。
+如果你学习bevy又不知道如何进行，你可以把他当作目录(左侧)的替代品。
+如果你是新手，从这里开始。
 
-If you would like more narrow-scoped examples that teach you how to solve
-specific problems, those can be found in the [Bevy Cookbook][chapter::cookbook]
-chapter.
+如果你想要更多具体的示例来帮助你解决问题，可以参考[Bevy Cookbook][chapter::cookbook]章节。
 
-You should also look at Bevy's [official collection of
-examples][bevy::examples]. There is something for almost every area of the
-engine, though they usually only show simple usage of the APIs without much
-explanation.
+
+你也可以看看 [官方示例][bevy::examples]. 尽管例子通常只展示了简单的使用方式，但是覆盖了几乎引擎的所有部分。

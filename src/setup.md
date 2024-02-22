@@ -1,16 +1,13 @@
 {{#include ./include/header-none.md}}
 
-# Bevy Setup Tips
+# Bevy 配置建议
 
-This chapter is a collection of additional tips for configuring
-your project or development tools, collected from the Bevy
-community, beyond what is covered in Bevy's [official setup
-documentation][bevy::getting-started].
+本章节收集了来自Bevy社区的一些额外提示，用于配置您的项目或开发工具，这些提示超出了Bevy的[official setup documentation][bevy::getting-started]所涵盖的范围。
 
-Feel free to suggest things to add under this chapter.
+欢迎在本章节下提出要添加的内容。
 
 ---
 
-Also see the following other relevant content from this book:
+还请参阅本书中的以下其他相关内容:
   - [Platform-specific information][chapter::platforms]
   - [Configuration to fix slow performance][pitfall::perf]

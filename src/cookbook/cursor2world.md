@@ -1,11 +1,10 @@
 {{#include ../include/header012.md}}
 
-# Convert cursor to world coordinates
+# 把光标转换为世界坐标
 
-## 2D games
+## 2D 游戏
 
-If you only have one window (the primary window), as is the case for most apps
-and games, you can do this:
+如果你只有一个窗口(主窗口),适用于大多数游戏,你可以这样:
 
 <details>
   <summary>
@@ -22,8 +21,7 @@ and games, you can do this:
 
 </details>
 
-If you have a more complex application with multiple windows, here is a more
-complex version of the code that can handle that:
+如果你有一个多窗口的复杂应用,这里有一个更加复杂版本的示例代码:
 
 <details>
   <summary>
@@ -40,22 +38,19 @@ complex version of the code that can handle that:
 
 </details>
 
-## 3D games
+## 3D 游戏
 
-If you'd like to be able to detect what 3D object the cursor is pointing at, select
-objects, etc., there is a good (unofficial) plugin:
+如果您希望能够检测光标指向的 3D 对象，这里有各好用的插件(非官方):
 [`bevy_mod_picking`][project::bevy_mod_picking].
 
-For a simple top-down camera view game with a flat ground plane, it might be
-sufficient to just compute the coordinates on the ground under the cursor.
+对于具有平坦地平面的简单自上而下的相机视图游戏，只计算光标下方地面的坐标就足够了。
 
 <button class="button_wasm_cbexample" id="button_cursor_3d_ground_plane">Load Interactive Example</button>
 
-In the interactive example, there is a ground plane with a non-default position
-and rotation. There is a red cube, which is positioned using the global
-coordinates, and a blue cube, which is a [child entity][cb::hierarchy] of the
-ground plane and positioned using local coordinates. They should both follow the
-cursor.
+在交互式示例中，有一个具有非默认位置和旋转的地平面。
+有一个红色的立方体(使用全局坐标定位)和一个蓝色的立方体(使用本地坐标定位) ，
+后者是地平面的[child entity][cb::hierarchy]。它们都应该跟着光标走。
+
 
 <details>
   <summary>

@@ -1,14 +1,13 @@
 {{#include ./include/header011.md}}
 
-# List of Bevy Builtins
+# 内置资源列表
 
-This page is a quick condensed listing of all the important things provided
-by Bevy.
+此页面是buvy所提供的所有重要内容的快查清单。
 
  - [SystemParams](#systemparams)
  - [Assets](#assets)
- - [File Formats](#file-formats)
- - [GLTF Asset Labels](#gltf-asset-labels)
+ - [文件格式](#file-formats)
+ - [GLTF 资源标签](#gltf-asset-labels)
  - [Shader Imports](#shader-imports)
  - [`wgpu` Backends](#wgpu-backends)
  - [Schedules](#schedules)
@@ -28,31 +27,29 @@ by Bevy.
 
 ## SystemParams
 
-These are all the special types that can be used as [system][cb::system] parameters.
+这是所有可以在 [system][cb::system] 函数中使用的参数类型
 
 {{#include ./include/builtins.md:systemparams}}
 
 ## Assets
 
-[(more info about working with assets)][cb::asset]
+[(关于资源的详细信息)][cb::asset]
 
-These are the Asset types registered by Bevy by default.
+以下是 Bevy 默认注册的资产类型.
 
 {{#include ./include/builtins.md:assets}}
 
-## File Formats
+## 文件格式
 
-These are the asset file formats (asset loaders) supported by Bevy. Support
-for each one can be enabled/disabled using [cargo features][cb::features]. Some
-are enabled by default, many are not.
+这里是bevy支持的资源的文件格式。每一个都可以使用 [cargo 特性][cb::features] 启用/关闭。有的是默认开启的，有的不是。
 
 {{#include ./include/builtins.md:file-formats}}
 
-There are unofficial plugins available for adding support for even more file formats.
+有一些非官方的插件可用于添加对更多文件格式的支持。
 
-## GLTF Asset Labels
+## GLTF 资源标签
 
-[Asset path labels to refer to GLTF sub-assets.][cb::gltf-asset-path]
+[子资源的GLTF资源路径标签][cb::gltf-asset-path]
 
 {{#include ./include/builtins.md:gltf-asset-labels}}
 
@@ -60,7 +57,7 @@ There are unofficial plugins available for adding support for even more file for
 
 TODO
 
-## `wgpu` Backends
+## `wgpu` 后端
 
 {{#include ./include/builtins.md:wgpu-backends}}
 
@@ -80,89 +77,83 @@ TODO
 
 ## Bundles
 
-Bevy's built-in [bundle][cb::bundle] types, for spawning different common
-kinds of entities.
+Bevy 内置 [bundle][cb::bundle] 类型, 可以生成不同种类的实体
 
 {{#include ./include/builtins.md:bundles}}
 
 ## Resources
 
-[(more info about working with resources)][cb::res]
+[(resources的详细信息)][cb::res]
 
 ### Configuration Resources
 
-These resources allow you to change the settings for how various parts of Bevy work.
+这些resources允许你改变bevy设定的部分工作方式。
 
-These may be inserted at the start, but should also be fine to change at runtime (from a
-[system][cb::system]):
+这些应该在启动时设置好，但也可以在运行时变更（通过[system][cb::system])）：
 
 {{#include ./include/builtins.md:resources-config}}
 
-Settings that are not modifiable at runtime are not represented using resources. Instead,
-they are configured via the respective [plugins](#plugins).
+在运行时不可修改的设置不会使用resources表示。它们通过相应的 [plugins](#plugins)进行配置。
 
 ### Engine Resources
 
-These resources provide access to different features of the game engine at runtime.
+这些resources提供了运行时访问不同游戏引擎特性的功能。
 
-Access them from your [systems][cb::system], if you need their state, or to control the respective
-parts of Bevy. These resources are in the [Main World][cb::render-architecture]. [See here for the
+如果需要他们的状态或者控制各自bevy部分，请通过你提供的 [systems][cb::system]访问他们。这些 resources 位于 [Main World][cb::render-architecture]. [See here for the
 resources in the Render World](#render-world).
 
 {{#include ./include/builtins.md:resources-main}}
 
 #### Render World Resources
 
-These resources are present in the [Render World][cb::render-architecture]. They can be accessed
-from rendering systems (that run during [render stages][cb::render::stage]).
+这些 resources 位于 [Render World][cb::render-architecture]. 
+通过 rendering systems 访问(运行于 [render stages][cb::render::stage]).
 
 {{#include ./include/builtins.md:resources-render}}
 
-There are many other resources in the Render World, which are not mentioned
-here, either because they are internal to Bevy's rendering algorithms, or
-because they are just extracted copies of the equivalent resources in the Main
-World.
+还有很多在Render World中未提及的resources，要么是因为它们是 Bevy 内部的渲染算法，
+要么因为它们只是 Main World 中等效资源提取的副本 。
 
-#### Low-Level `wgpu` Resources
 
-Using these resources, you can have direct access to the `wgpu` APIs for controlling the GPU.
-These are available in both the Main World and the Render World.
+#### 低阶 `wgpu` Resources
+
+通过这些resources, 你可以直接访问`wgpu` 的API控制GPU.
+这适用于Main World 和 Render World.
 
 {{#include ./include/builtins.md:resources-wgpu}}
 
 ### Input Handling Resources
 
-These resources represent the current state of different input devices. Read them from your
-[systems][cb::system] to [handle user input][chapter::input].
+这些resources表示不同输入设备的当前状态. 从你的
+[systems][cb::system]中读取 并 [处理用户输入][chapter::input].
 
 {{#include ./include/builtins.md:resources-input}}
 
 ## Events
 
-[(more info about working with events)][cb::event]
+[(events详细信息)][cb::event]
 
 ### Input Events
 
-These [events][cb::event] fire on activity with input devices. Read them to [handle user input][cb::input].
+这部分[events][cb::event] 由输入设备触发，读取他们并[处理用户输入][cb::input].
 
 {{#include ./include/builtins.md:events-input}}
 
 ### Engine Events
 
-[Events][cb::event] related to various internal things happening during the
-normal runtime of a Bevy app.
+ Bevy应用正常运行期间发生的内部相关[Events][cb::event]。
 
 {{#include ./include/builtins.md:events-engine}}
 
 ### System and Control Events
 
-Events from the OS / windowing system, or to control Bevy.
+来自操作系统/窗口系统 或用于控制bevy的Events
 
 {{#include ./include/builtins.md:events-system}}
 
 ## Components
 
-The complete list of individual component types is too specific to be useful to list here.
+完整的各component的类型列表由于太细碎无法在此列出
 
-See: [(List in API Docs)][bevy::impl::Component]
+请看: [(List in API Docs)][bevy::impl::Component]
 

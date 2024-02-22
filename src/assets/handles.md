@@ -57,7 +57,7 @@ handle.
 
 Just like regular handles, untyped handles can be strong or weak.
 
-You need to do this to [access the asset data][cb::asset-data].
+You need to do this to [访问资源数据][cb::asset-data].
 
 You can convert an untyped handle into a typed handle with `.typed::<T>()`,
 specifying the type to use. You need to do this to [access the asset

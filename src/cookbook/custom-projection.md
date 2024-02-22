@@ -1,26 +1,20 @@
 {{#include ../include/header09.md}}
 
-# Custom Camera Projection
+# 自定义相机投影
 
-**Note**: this example is showing you how to do something not officially
-supported/endorsed by Bevy. Do at your own risk.
+**Note**: 这个示例是告诉你如何做到bevy官方不支持/不认可的事情,自付风险.
 
-Camera with a custom projection (not using one of Bevy's standard perspective
-or orthographic projections).
+具有自定义投影的相机(没有使用bevy标准透视或者正交投影).
 
-You could also use this to change the coordinate system, if you insist on
-using something other than [Bevy's default coordinate system][cb::coords],
-for whatever reason.
+无论出于什么原因,如果你坚持不使用 [Bevy默认坐标系统][cb::coords],可以这样改变坐标系统.
 
-Here we implement a simple orthographic projection that maps `-1.0` to `1.0`
-to the vertical axis of the window, and respects the window's aspect ratio
-for the horizontal axis:
+这里有一个简单的正交投影实现,将-1.0映射到1.0到窗口的垂直轴，并保留窗口的水平轴的比例:
 
-See how Bevy constructs its camera bundles, for reference:
+看看bevy是如何构造他的相机bundles的:
  - [2d](https://github.com/bevyengine/bevy/blob/v0.9.0/crates/bevy_core_pipeline/src/core_2d/camera_2d.rs#L46)
  - [3d](https://github.com/bevyengine/bevy/blob/v0.9.0/crates/bevy_core_pipeline/src/core_3d/camera_3d.rs#L72)
 
-This example is based on the setup for a 2D camera:
+此示例基于 2D 相机的设置:
 
 ```rust,no_run,noplayground
 {{#include ../code/examples/custom-projection.rs:example}}

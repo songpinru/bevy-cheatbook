@@ -21,7 +21,7 @@
 
 ---
 
-- [Bevy 初始化](./setup.md)
+- [Bevy 配置建议](./setup.md)
   - [入门](./setup/getting-started.md)
   - [文本编辑器 / IDE](./setup/editor.md)
     - [Visual Studio Code](./setup/editor/vscode.md)
@@ -50,10 +50,10 @@
   - [可见性](./fundamentals/visibility.md)
   - [时间和定时器](./fundamentals/time.md)
   - [日志，控制台消息](./fundamentals/log.md)
-  - [父子层次结构](./fundamentals/hierarchy.md)
+  - [父子层级结构](./fundamentals/hierarchy.md)
   - [固定时间步长](./fundamentals/fixed-timestep.md)
 
-- [一般图形特性](./graphics.md)
+- [常用图形特性](./graphics.md)
   - [相机](./graphics/camera.md)
   - [HDR 和色调映射](./graphics/hdr-tonemap.md)
   - [Bloom](./graphics/bloom.md)

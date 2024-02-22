@@ -1,41 +1,30 @@
 {{#include ../include/header012.md}}
 
-# New to Bevy? Guided Tutorial!
+# 新手指引
 
 Welcome to Bevy! :) We are glad to have you in our community!
 
-This page will guide you through this book, to help you gain comprehensive
-knowledge of how to work with Bevy. The topics are structured in an order
-that makes sense for learning: from basics to advanced.
+这部分将会引导你浏览本书，帮助你获得使用bevy的全部知识。
+浏览顺序是方便你学习的：从初级到高级
 
-It is just a suggestion to help you navigate. Feel free to jump around the book
-and read whatever interests you. The main table-of-contents (the left sidebar)
-was designed to be a reference for Bevy users of any skill level.
+这只是一个帮助您导航的建议。随意跳转这本书 并阅读您感兴趣的任何内容。主目录（左侧边栏） 旨在为任何技能水平的 Bevy 用户提供参考。
 
 ---
 
-Make sure to also look at [the official Bevy examples][bevy::examples]. If
-you need help, use [GitHub Discussions][bevy::ghdiscussions], or feel welcome
-to join us to chat and ask for help in [Discord][bevy::discord].
+请务必查看 [the official Bevy examples][bevy::examples]. 如果需要帮助，请使用 [GitHub Discussions][bevy::ghdiscussions], 或者欢迎加入我们的聊天室 [Discord][bevy::discord].
 
-If you run into issues, be sure to check the
-[Common Pitfalls][chapter::pitfalls] chapter, to see if this book has something
-to help you. Solutions to some of the most common issues that Bevy community
-members have encountered are documented there.
+如果你遇到了问题，请优先查看[常见陷阱][chapter::pitfalls]章节, 大多数常见问题都有社区成员提供的详尽的解决方案。
 
-## Basics
+## 基础
 
-These are the absolute essentials of using Bevy. Every Bevy project, even a
-simple one, would require you to be familiar with these concepts.
+这些是使用 Bevy 的绝对必要条件。每个 Bevy 项目，甚至是 一个简单的，需要你熟悉这些概念。
 
-You could conceivably make something like a simple game-jam game or prototype,
-using just this knowledge. Though, as your project grows, you will likely
-quickly need to learn more.
+你可以 仅使用这些知识制作一个简单的游戏开发游戏或原型。不过，随着项目的发展，您可能很快会需要了解更多信息。
 
- - [Bevy Setup Tips][chapter::setup]
-   - [Getting Started][cb::getting-started]
- - [Bevy Programming Framework][chapter::programming]
-   - [Intro to ECS][cb::ecs-intro]
+ - [Bevy配置建议][chapter::setup]
+   - [入门][cb::getting-started]
+ - [Bevy 编程框架][chapter::programming]
+   - [ECS简介][cb::ecs-intro]
    - [Entities, Components][cb::ec]
    - [Bundles][cb::bundle]
    - [Resources][cb::res]
@@ -43,14 +32,14 @@ quickly need to learn more.
    - [App Builder][cb::app]
    - [Queries][cb::query]
    - [Commands][cb::commands]
- - [Game Engine Fundamentals][chapter::fundamentals]
-   - [Coordinate System][cb::coords]
+ - [游戏引擎基础][chapter::fundamentals]
+   - [坐标系][cb::coords]
    - [Transforms][cb::transform]
    - [Time and Timers][cb::time]
- - [General Graphics Features][chapter::graphics]
+ - [常用图形特性][chapter::graphics]
    - [Cameras][cb::camera]
- - [Bevy Asset Management][chapter::assets]
-   - [Load Assets with AssetServer][cb::assetserver]
+ - [Bevy 资源管理][chapter::assets]
+   - [使用AssetServer加载资源][cb::assetserver]
    - [Handles][cb::handle]
  - [Input Handling][chapter::input]
    - [Keyboard][input::keyboard]
@@ -63,12 +52,11 @@ quickly need to learn more.
  - [Audio][chapter::audio]
    - [Playing Sounds][cb::audio-basic]
 
-## Next Steps
+## 下一步
 
-You will likely need to learn most of these topics to make a non-trivial Bevy
-project. After you are confident with the basics, you should learn these.
+您可能需要学习其中的大部分内容才能制作出一个不简单的 Bevy 项目。在你对基础知识有信心之后，你应该学习这些。
 
- - [Bevy Programming Framework][chapter::programming]
+ - [Bevy 编程框架][chapter::programming]
    - [Events][cb::event]
    - [System Order of Execution][cb::system-order]
    - [Run Conditions][cb::rc]
@@ -78,32 +66,31 @@ project. After you are confident with the basics, you should learn these.
    - [States][cb::state]
    - [Plugins][cb::plugin]
    - [Change Detection][cb::change-detection]
- - [Game Engine Fundamentals][chapter::fundamentals]
-   - [Parent/Child Hierarchies][cb::hierarchy]
+ - [游戏引擎基础][chapter::fundamentals]
+   - [父子层级结构][cb::hierarchy]
    - [Visibility][cb::visibility]
-   - [Logging / Console Messages][cb::log]
+   - [日志/控制台信息][cb::log]
  - [Input Handling][chapter::input]
-   - [Convert cursor to world coordinates][cookbook::cursor2world]
- - [Bevy Asset Management][chapter::assets]
-   - [Access the Asset Data][cb::asset-data]
-   - [Hot-Reloading Assets][cb::asset-hotreload]
- - [Bevy Setup Tips][chapter::setup]
-   - [Bevy Dev Tools and Editors][cb::tools]
-   - [Community Plugin Ecosystem][cb::3rdparty]
- - [Audio][chapter::audio]:
-   - [Spatial Audio][cb::audio-spatial]
+   - [把光标转换为世界坐标][cookbook::cursor2world]
+ - [Bevy资源管理][chapter::assets]
+   - [访问资源数据][cb::asset-data]
+   - [热重载资源][cb::asset-hotreload]
+ - [Bevy配置建议][chapter::setup]
+   - [Bevy开发工具和编辑器][cb::tools]
+   - [社区插件生态][cb::3rdparty]
+ - [音频][chapter::audio]:
+   - [空间音效][cb::audio-spatial]
 
-## Intermediate
+## 中级
 
-These are more specialized topics. You may need some of them, depending on your
-project.
+这是一些特殊内容，你可能会需要他们，取决于你的项目
 
- - [Bevy Programming Framework][chapter::programming]
+ - [Bevy 编程框架][chapter::programming]
    - [Direct World Access][cb::world]
    - [Exclusive Systems][cb::exclusive]
    - [Param Sets][cb::paramset]
    - [System Piping][cb::system-pipe]
- - [Game Engine Fundamentals][chapter::fundamentals]
+ - [游戏引擎基础][chapter::fundamentals]
    - [Fixed Timestep][cb::fixedtimestep]
  - [General Graphics Features][chapter::graphics]
    - [HDR, Tonemapping][cb::hdr]
@@ -111,7 +98,7 @@ project.
  - [Input Handling][chapter::input]
    - [Input Text][input::char]
    - [Drag-and-Drop files][input::dnd]
- - [Bevy Asset Management][chapter::assets]
+ - [Bevy资源管理][chapter::assets]
    - [React to Changes with Asset Events][cb::assetevent]
    - [Track asset loading progress][cb::asset-ready]
  - [Programming Patterns][chapter::patterns]
@@ -124,17 +111,15 @@ project.
  - [Audio][chapter::audio]
    - [Custom Audio Streams][cb::audio-custom]
 
-## Advanced
+## 高级
 
-These topics are for niche technical situations. You can learn them, if you want
-to know more about how Bevy works internally, extend the engine with custom
-functionality, or do other advanced things with Bevy.
+这部内容适用面较小，如果你希望了解Bevy的内部工作原理，自己扩展bevy的功能，或者做一些高级的事情，你可以学习这部分。
 
- - [Bevy Programming Framework][chapter::programming]
+ - [Bevy 编程框架][chapter::programming]
    - [Non-Send][cb::nonsend]
  - [Programming Patterns][chapter::patterns]
    - [Component Storage][cb::component-storage]
- - [Bevy Setup Tips][chapter::setup]
+ - [Bevy配置建议][chapter::setup]
    - [Customizing Bevy (cargo crates and features)][cb::features]
    - [Using bleeding-edge Bevy (main)][cb::bevy-main]
  - [Bevy Render (GPU) Framework][chapter::gpu]

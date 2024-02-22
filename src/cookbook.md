@@ -1,19 +1,14 @@
 {{#include ./include/header-none.md}}
 
-# Bevy Cookbook
+# Bevy 指导手册
 
-This chapter shows you how to do various practical things using Bevy.
+这一章节是教你如何使用bevy做一些实际的工作。
 
-Every page is focused on a specific problem and provides explanations and
-example code to teach you how to solve it.
+每一页都关注一个特定的问题，并提出解决方案和示例代码。
 
-It is assumed that you are already familiar with
-[Bevy Programming][chapter::programming].
 
-You should also look at Bevy's [official collection of
-examples][bevy::examples]. There is something for almost every area of the
-engine, though they usually only show simple usage of the APIs without much
-explanation.
+假设您已经熟悉[Bevy编程][chapter::programming].
 
-If you would like step-by-step tutorials that you can follow from start to
-finish, those are in the [Bevy Tutorials][chapter::tutorial] chapter.
+您还应该查看 [official collection of examples][bevy::examples].尽管例子通常只展示了简单的使用方式，但是覆盖了几乎引擎的所有部分。
+
+如果你想要一步一步的教程，可以看看 [Bevy Tutorials][chapter::tutorial]章节。

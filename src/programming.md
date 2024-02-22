@@ -11,7 +11,7 @@ scientific simulation.
 
 Hence, this chapter does not cover the game-engine parts of Bevy. Those
 features are covered in other chapters of the book. You can start with
-[Game Engine Fundamentals][chapter::fundamentals] chapter.
+[游戏引擎基础][chapter::fundamentals] chapter.
 
 For additional of programming patterns and idioms, see the [Programming
 Patterns][chapter::patterns] chapter.
