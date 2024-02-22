@@ -1,47 +1,41 @@
 {{#include ./include/header-none.md}}
 
-# Chapter Overview
+# 章节概述
 
-The [Bevy Builtins][chapter::builtins] page is a concise cheatsheet of useful
-information about types and features provided by Bevy.
+ [Bevy 内置资源][chapter::builtins] 包含了Bevy提供的内置类型与特性。
 
-The [Bevy Tutorials][chapter::tutorial] chapter is for tutorials/guides
-that you can follow from start to finish.
+ [Bevy Tutorials][chapter::tutorial] 这个章节是新手指引，帮你快速入门。
 
-The [Bevy Cookbook][chapter::cookbook] is for more self-contained /
-narrow-scoped examples that teach you how to solve specific problems.
+[Bevy Cookbook][chapter::cookbook] 更适合自给自足 / 教您如何解决特定问题的示例。
 
-The rest of the book is designed as a reference, covering different aspects of
-working with Bevy. Feel free to jump around the book, to learn about any topic
-that interests you. On every page of the book, any time other topics are
-mentioned, the relevant pages or official API documentation is linked.
+本书的其余部分旨在作为参考，涵盖了使用Bevy的不同方面。随意跳转这本书，了解任何你感兴趣的部分。
+在书的每一页上，提及相关页面或官方 API 文档均有链接。
 
-If you would like a guided experience, or to browse the book by relative
-difficulty (from beginner to advanced), try the [guided tutorial
-page][chapter::tutorial]. It recommends topics in a logical order for learning.
+如果需要新手引导或者想由浅入深的学习，请跳转 [guided tutorial
+page][chapter::tutorial]. 这里按逻辑顺序提供了学习路线。
 
-The book has the following general chapters:
+本书还有以下章节:
 
- - [Bevy Setup Tips][chapter::setup]: project setup advice, recommendations for tools and plugins
- - [Common Pitfalls][chapter::pitfalls]: solutions for common issues encountered by the community
- - [Bevy on Different Platforms][chapter::platforms]: information about working with specific plaforms / OSs
+ - [Bevy 初始化][chapter::setup]: 项目初始化建议，推荐的插件和工具
+ - [常见陷阱][chapter::pitfalls]: 常见的一些陷阱和解决方案
+ - [Bevy 各平台支持][chapter::platforms]: 各平台/操作系统支持
 
 <!-- - [Appendix: General Concepts][chapter::concepts]: various general gamedev knowledge, not specific to Bevy -->
 
-To learn how to program in Bevy, see these chapters:
+如何使用bevy开发，参考以下章节:
 
- - [Bevy Core Programming Framework][chapter::programming]: the ECS+App frameworks, the foundation of everything
- - [Programming Patterns][chapter::patterns]: opinionated advice, patterns, idioms
- - [Bevy Render (GPU) Framework][chapter::gpu]: working with the GPU and Bevy's rendering
+ - [Bevy 核心编程框架][chapter::programming]: ECS+App 架构，最基础的内容
+ - [编程模式][chapter::patterns]: 一些建议，模式，习惯
+ - [Bevy 渲染 (GPU) 框架][chapter::gpu]: GPU渲染相关
 
-The following chapters cover various Bevy feature areas:
+下列章节包含了Bevy的多个特性:
 
- - [Game Engine Fundamentals][chapter::fundamentals]
- - [General Graphics Features][chapter::graphics]
- - [Working with 2D][chapter::2d]
- - [Working with 3D][chapter::3d]
- - [Input Handling][chapter::input]
- - [Window Management][chapter::window]
- - [Asset Management][chapter::assets]
- - [Audio][chapter::audio]
- - [Bevy UI Framework][chapter::ui]
+ - [游戏引擎基础][chapter::fundamentals]
+ - [一般图形特性][chapter::graphics]
+ - [使用2D][chapter::2d]
+ - [使用3D][chapter::3d]
+ - [输入处理][chapter::input]
+ - [窗口管理][chapter::window]
+ - [资源管理][chapter::assets]
+ - [音频][chapter::audio]
+ - [Bevy UI 框架][chapter::ui]

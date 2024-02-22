@@ -1,79 +1,64 @@
 {{#include ./include/links-common.md}}
 
-# Unofficial Bevy Cheat Book
 
-This is a reference-style book for the [Bevy game engine][bevy::website]
-([GitHub][project::bevy]).
+# 关于译者
 
-It aims to teach Bevy concepts in a concise way, help you be productive,
-and discover the knowledge you need.
+国内目前没有比较好的Bevy教程，作为学习者，我只能从英文文档学习，由开发者编写的 Unofficial Bevy Cheat Book 是目前能找到的介绍 Bevy 最全面的书籍。所以打算一边学一边翻译，这是我第一次做这种翻译工作，我会尽力翻译，如果有不足的地方，可以联系我或者帮助我，有时间我一定会更新，谢谢大家。
 
-This book aggregates a lot of community wisdom that is often not covered
-by official documentation, saving you the need to struggle with issues that
-others have figured out already!
+原书使用的是Mdbook和github pages，我依循了这个方式，这两个工具非常方便，可以让我集中精力在翻译上。有想要联系我或者帮我的，可以通过github联系我，[仓库地址](https://github.com/songpinru/bevy-cheatbook).
 
-While it aims to be exhaustive, documenting an entire game engine is
-a monumental task. I focus my time on whatever I believe the community
-needs most.
+-------------------------
+# 非官方的教程
 
-Therefore, there are still a lot of omissions, both for basics and advanced
-topics. Nevertheless, I am confident this book will prove to be a valuable
-resource to you!
+这是一本针对 [Bevy 游戏引擎][bevy::website]
+([GitHub][project::bevy])的参考书.
 
-***Welcome! May this book serve you well!***
+它旨在以简洁的方式教授 Bevy 概念，帮助您提高工作效率， 并发现您需要的知识。
 
-(don't forget to
-<a class="github-button" href="https://github.com/bevy-cheatbook/bevy-cheatbook" data-icon="octicon-star" aria-label="Star bevy-cheatbook/bevy-cheatbook on GitHub">Star</a>
-the book's [GitHub repository][project::cb],
-and consider [donating](https://github.com/sponsors/inodentry) 🙂)
+这本书汇集了许多官方文档没有涉及的社区经验，你不需要浪费时间解决问题，其他人已经搞定了！
 
-## How to use this book
+虽然它的目标是详尽无遗，但这是一项艰巨的任务。我把时间集中在我认为社区最需要的事情上。
 
-The pages in this book are not designed to be read in order. Each page covers
-a standalone topic. Feel free to jump to whatever interests you.
+因此，无论是基础还是高级知识点都还有遗漏的部分，但是我相信这本书对你还是很有价值的！
 
-If you have a specific topic in mind that you would like to learn about, you
-can find it from the table-of-contents (sidebar) or using the search function
-(in the top bar).
 
-The [Chapter Overview][chapter::overview] page will give you a general idea
-of how the book is structured.
+***欢迎！愿这本书对你有好处！***
 
-The text on each page will link to other pages, where you can learn about other
-things mentioned in the text. This helps you jump around the book.
+(别忘了给这本书[GitHub repository][project::cb]
+<a class="github-button" href="https://github.com/bevy-cheatbook/bevy-cheatbook" data-icon="octicon-star" aria-label="Star bevy-cheatbook/bevy-cheatbook on GitHub">Star</a>,
+也可以[捐赠](https://github.com/sponsors/inodentry) 🙂)
 
-If you are new to Bevy, or would like a more guided experience, try the
-[Guided Tour tutorial][cbtut::guide]. It will help you navigate the book in
-an order that makes sense for learning, from beginner to advanced topics.
+## 如何使用
 
-The [Bevy Builtins][chapter::builtins] page is a concise cheatsheet of useful
-information about types and features provided by Bevy.
+这本书不必按顺序阅读，每个章节都是一个独立的知识点，请随意跳转。
 
-## Recommended Additional Resources
+使用侧边栏跳转到感兴趣的章节或者使用顶部的搜索功能跳转。
 
-Bevy has a rich collection of [official code
-examples][bevy::examples].
+[章节概述][chapter::overview] 帮助你大致了解这本书的结构
 
-Check out [bevy-assets][bevyassets], for community-made resources.
+每个章节都有相关章节的链接，可以帮助你方便的跳转
 
-Our community is very friendly and helpful. Feel welcome to join the [Bevy
-Discord][bevy::discord] to chat, ask questions, or get involved in the project!
+如果你是新手，从[新手引导][cbtut::guide]开始. 这会帮助你有顺序的了解初级到高级的知识。
 
-If you want to see some games made with Bevy, see [itch.io][itchio::bevy]
-or [Bevy Assets][bevyassets::games].
+[Bevy 内置资源][chapter::builtins] Bevy提供的内置类型与特性。
 
-## Is this book up to date?
+## 推荐的其他资源
 
-Bevy has a very rapid pace of development, with new major releases roughly every
-three months. Every version brings a lot of changes, so keeping this book
-updated can be a major challenge.
+ [official code examples][bevy::examples]，官方示例。
 
-To ease the maintenance burden, the policy of the project is that the book may
-contain content for different versions of Bevy. However, mixing Bevy versions
-on the same page is not allowed.
+ [bevy-assets][bevyassets], 社区生态资源。
 
-At the top of every page, you will see the version it was last updated for.
-All content on that page must be relevant for the stated Bevy version.
+ [Bevy Discord][bevy::discord] 官方聊天室。
+
+ [itch.io][itchio::bevy]或[Bevy Assets][bevyassets::games]上可以找到Bevy制作的一些游戏.
+
+## 这本书是最新的吗?
+
+Bevy 的开发速度非常快，几乎每三个月，每个版本都会带来很多变化，所以保持这本书的更新是一个重大挑战。
+
+为了减轻维护负担，该书包含不同版本的 Bevy 的内容。但是，多个Bevy版本的内容不允许在同一页面上。
+
+在每个页面的顶部，您都会看到它上次更新的版本。 该页面上的所有内容必须与所述的 Bevy 版本相关。
 
 ## Support Me
 
@@ -133,15 +118,12 @@ Contributions are accepted, with some limitations.
 
 See the [Contributing][cb::contributing] section for all the details.
 
-## Stability Warning
+## 稳定性警告
 
-Bevy is still a new and experimental game engine! It has only been public
-since August 2020!
+Bevy 仍然是一个新的实验性游戏引擎！它公开自 2020 年 8 月！
 
-While improvements have been happening at an incredible pace, and development
-is active, Bevy simply hasn't yet had the time to mature.
+虽然很活跃，发展速度很快，但Bevy还未成熟。
 
-*There are no stability guarantees and breaking changes happen often!*
+没有稳定性保证，经常发生重大更改！
 
-Usually, it not hard to adapt to changes with new releases, but you have been
-warned!
+通常，适应新版本的变化并不难，但是依然请你了解这一点！
