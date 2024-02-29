@@ -2,22 +2,21 @@
 
 # Kakoune
 
-If you are a Kakoune user and you'd like something to be added to this page,
-please file a [GitHub Issue][project::cb::issues].
+如果你是 Kakoune 用户并且你想在这页增加一些内容,请提一个 [GitHub Issue][project::cb::issues].
 
-## Rust Language Support
+## Rust 语言支持
 
-You can use `kak-lsp` with `rust-analyzer`.
+你可以一起使用`rust-analyzer`和`kak-lsp`
 
-You want to install just the RA server, without the official VSCode plugin.
+你要是不想安装官方VSCode插件,只安装RA服务器.
 
-You can manage it via `rustup`:
+你可以通过`rustup`修改:
 
 ```sh
 rustup component add rust-analyzer
 ```
 
-Or you can build/install it yourself from git:
+或者你可以自己从git构建安装:
 
 ```sh
 git clone https://github.com/rust-lang/rust-analyzer
@@ -26,9 +25,9 @@ git checkout release # use the `release` branch instead of `main`
 cargo xtask install --server
 ```
 
-The easiest way to set up `kak-lsp` is using `plug.kak`.
+设置 `kak-lsp`最简单的方式是 `plug.kak`.
 
-If you don't have `plug.kak`, put the following in `~/.config/kak/kakrc`:
+如果你没有 `plug.kak`, 把下面内容放进 `~/.config/kak/kakrc`:
 
 ```kak
 evaluate-commands %sh{
@@ -41,7 +40,7 @@ evaluate-commands %sh{
 plug "andreyorst/plug.kak" noload
 ```
 
-And then to set up `kak-lsp` with Rust support:
+然后设置 `kak-lsp` 的Rust支持:
 
 ```kak
 plug "kak-lsp/kak-lsp" do %{
@@ -79,7 +78,7 @@ hook global BufSetOption filetype=rust %{
 }
 ```
 
-Put the following in `~/.config/kak-lsp/kak-lsp.toml` to use `rust-analyzer`:
+把下面内容放在 `~/.config/kak-lsp/kak-lsp.toml` 来使用 `rust-analyzer`:
 
 ```toml
 [server]

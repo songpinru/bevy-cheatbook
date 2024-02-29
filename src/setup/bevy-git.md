@@ -1,82 +1,62 @@
 {{#include ../include/header012.md}}
 
-# Using bleeding-edge Bevy (bevy main)
+# 使用前沿 Bevy (bevy main)
 
-Bevy development moves very fast, and there are often exciting new things that
-are yet unreleased. This page will give you advice about using development
-versions of bevy.
+Bevy发展非常的快,还有很多未发布的令人激动的东西.这页会给你使用开发中版本bevy的建议.
 
-## Quick Start
+## 快速开始
 
-If you are *not* using any 3rd-party plugins and just want to use the bevy
-main development branch:
+如果你不使用第三方插件,并只想使用main分支:
 
 ```toml
 [dependencies]
 bevy = { git = "https://github.com/bevyengine/bevy" }
 ```
 
-However, if you *are* working with external plugins, you should read the rest
-of this page. You will likely need to do more to make everything compatible.
+如果你想使用外部插件,你应该阅读本页剩下的部分.你可能要做些额外的兼容工作.
 
-## Should you use bleeding-edge Bevy? What version of Bevy should you use?
+## 你应该使用前沿Bevy吗? 你该使用哪个版本的Bevy?
 
-Bevy follows a "train release" model, with loose deadlines. Every 3 months,
-a new major release is prepared, which will contain all new developments
-(features, fixes, etc.) since the last release. The release date is not
-strict and is often delayed by a few weeks to tie up loose ends.
+Bevy 遵循“火车发布”模型，具有宽松的截止日期。每三个月，就会准备一次新的主要发布，其中将包含自上次发布以来的所有新发展（功能、修复等）。
+发布日期并不严格，通常会延迟数周以完成后续工作。
 
-Further, Bevy usually follows up every major release with a patch release
-or two, as needed, to fix any bugs discovered soon after release. It will
-not contain all fixes, just small non-breaking things that are considered
-critical enough.
+此外，Bevy 通常会在每个主要发布后根据需要发布一到两个补丁发布，以修复发布后不久发现的任何错误。
+它不会包含所有修复，只是被认为足够关键的小型非破坏性修复。
 
-Most Bevy projects should use the latest release on crates.io. If you want
-to play it safe, you can wait until the first patch release (`0.*.1`),
-before upgrading to a new major version. You might also want to wait for
-any 3rd-party plugins you are using to support the new Bevy version.
+大多数 Bevy 项目应该使用 crates.io 上的最新版本。
+如果您想安全起见，可以在升级到新版本之前等待第一个补丁发布（0.*.1）。
+您可能还需要等待您使用的任何第三方插件支持新的 Bevy 版本。
 
-On the other hand, for experimentation and for Bevy development, you are
-encouraged to try the latest in-development code from git! The latest
-release is often missing the freshest bug fixes, usability improvements,
-and features. It may be compelling to join in on the action!
+另一方面，对于实验和 Bevy 开发，我们鼓励您尝试从 git 中获取最新的开发中代码！
+最新版本通常缺少最新的错误修复、可用性改进和功能。加入其中可能很有吸引力！
 
-If you are new to Bevy, this might not be for you. You might be more
-comfortable using the released version. It will have the best compatibility
-with community plugins and documentation.
+如果您是 Bevy 的新手，这可能不适合您。您可能更愿意使用发布的版本。它将与社区插件和文档具有最佳兼容性。
 
-The in-development version of Bevy has frequent breaking changes. Therefore,
-it can be very annoying to use for real projects. Also, 3rd-party plugin
-authors often don't bother to stay compatible. You will face breakage often
-and probably have to fix it yourself.
+Bevy 的开发中版本经常会有破坏性的更改。因此，对于实际项目来说，使用它可能会非常烦人。
+此外，第三方插件的作者通常不会费心保持兼容性。您将经常面临破坏，并且可能不得不自己修复它。
 
-It is only recommended to do this for more experimental or toy projects.
+仅建议对更实验性或玩具项目进行此操作。
 
-Though, there are ways you can manage the breakage and make it less of a
-problem. Thanks to cargo, you can update bevy at your convenience, whenever you
-feel ready to handle any possible breaking changes.
+不过，有一些方法可以帮助您管理破坏并减少问题。感谢 cargo，您可以在方便的时候更新 Bevy，只要您认为自己可以处理任何可能的破坏性更改。
 
-You may want to consider forking the repositories of Bevy and any plugins you
-use. Using your own forks allows you to easily apply fixes if needed, or edit
-their `Cargo.toml` for any special configuration to make your project work.
+您可能想要考虑对 Bevy 和您使用的任何插件的存储库进行分叉。
+使用您自己的fork可以让您轻松地在需要时应用修复，或编辑它们的 `Cargo.toml`  文件。
+这样，即使原始存储库进行了破坏性的更改，您也可以继续使用您的项目，而不会受到影响。
 
-If you choose to use Bevy main, you are highly encouraged to interact with
-the Bevy community on [Discord][bevy::discord] and [GitHub][project::bevy], so
-you can keep track of what's going on, get help, or participate in discussions.
 
-## Common pitfall: mysterious compile errors
+如果你使用 Bevy main,强烈建议你通过[Discord][bevy::discord] 和 [GitHub][project::bevy]来联系社区, 以便你可以跟踪正在发生的事情，寻求帮助，或者参与讨论。
 
-When changing between different versions of Bevy (say, transitioning an existing
-project from the released version to the git version), you might get lots of
-strange unexpected build errors.
+## 常见的陷阱：神秘的编译错误
 
-You can typically fix them by removing `Cargo.lock` and the `target` directory:
+在不同版本的Bevy之间进行更改时(例如,转换现有版本从发布版本到git版本的项目),您可能会得到很多奇怪的意外构建错误.
+
+您通常可以通过删除 `Cargo.lock` 和 `target` 目录来修复:
 
 ```sh
 rm -rf Cargo.lock target
 ```
 
-See [this page][pitfall::build-errors] for more info.
+看[这里][pitfall::build-errors] 获得详细信息.
 
 If you are still getting errors, it is probably because cargo is trying
 to use multiple different versions of bevy in your dependency tree
@@ -88,10 +68,7 @@ edit their `Cargo.toml` and have control over how everything is configured.
 
 ## Cargo Patches
 
-In some cases, you might be able to use "cargo patches" to locally override
-dependencies. For example, you might be able to point plugins to use your
-fork of bevy, without forking and editing the plugin's `Cargo.toml`, by
-doing something like this:
+某些情况下,你可能需要"cargo patches"来本地替换依赖.你可能指定插件使用你fork的bevy,而不用fork和编辑插件的`Cargo.toml`,如下:
 
 ```toml
 # replace the bevy git URL source with ours
@@ -115,44 +92,38 @@ bevy = { path = "../bevy" }
 # ...
 ```
 
-## Updating Bevy
+## 升级 Bevy
 
-It is recommended that you specify a known-good Bevy commit in your
-`Cargo.toml`, so that you can be sure that you only update it when you
-actually want to do so, avoiding unwanted breakage.
+建议你在`Cargo.toml`中指定一个经过验证的bevy commit,以便你可以确保仅在需要时才更新,以避免破环.
 
 ```toml
 bevy = { git = "https://github.com/bevyengine/bevy", rev = "7a1bd34e" }
 ```
 
-When you change anything, be sure to run:
+有任何更改,请运行:
 
 ```sh
 cargo update
 ```
 
-(or delete `Cargo.lock`)
+(或者删除 `Cargo.lock`)
 
-Otherwise you risk errors from cargo not resolving dependencies correctly.
+否则,您可能会遇到cargo无法正确解析依赖项而导致的错误.
 
-## Advice for plugin authors
+## 给插件作者的建议
 
-If you are publishing a plugin crate, here are some recommendations:
-  - Use the main branch in your repository for targeting the released version of Bevy
-  - Have a separate branch in your repository, to keep support for bevy main
-    separate from your version for the released version of bevy
-  - Put information in your README to tell people how to find it
-  - Set up CI to notify you if your plugin is broken by new changes in bevy
+如果你要发布一个插件 crate, 以下是一些建议:
+  - 你的仓库中的main分支应该绑定bevy最新发布的版本
+  - 在您的存储库中有一个单独的分支,以保持对bevy-main的支持与对已发布的Bevy版本的支持相分离
+  - 在README中告诉大家如何找到它
+  - 设置CI来提醒你bevy中新的变动是否损坏你的插件
 
-Feel free to follow all the advice from this page, including cargo patches
-as needed. Cargo patches only apply when you build your project directly,
-not as a dependency, so they do not affect your users and can be safely kept
-in your `Cargo.toml`.
+请随意遵循本页面上的所有建议，包括按需使用cargo Patches。cargo Patches仅在您直接构建项目时适用，
+而不是作为依赖项，因此它们不会影响您的用户，并且可以安全地保留在您的`Cargo.toml`中。
 
-### CI Setup
+### CI 设置
 
-Here is an example for GitHub Actions. This will run at 8:00 AM (UTC) every day
-to verify that your code still compiles. GitHub will notify you when it fails.
+这是一个Github Action的示例.每天早上8:00(UTC)会校验你的代码并编译.GitHub会在失败时通知你.
 
 ```yaml
 name: check if code still compiles

@@ -1,22 +1,17 @@
 {{#include ../include/header-none.md}}
 
-# Community Plugins Ecosystem
+# 社区插件生态
 
-There is a growing ecosystem of unofficial community-made plugins for Bevy.
-They provide a lot of functionality that is not officially included with the
-engine. You might greatly benefit from using some of these in your projects.
+社区制作 Bevy 插件的生态系统正在不断增长，它提供了许多没有正式包含在引擎中的功能。在你的项目中使用其中的一些插件，你会大大受益。
 
-To find such plugins, you should search the [Bevy Assets][bevyassets]
-page on the official Bevy website. This is the official registry of known
-community-made things for Bevy. If you publish your own plugins for Bevy,
-you should [contribute a link to be added to that page][project::bevyassets].
+要找到这些插件，你可以在 Bevy 官方网站上的 [Bevy Assets][bevyassets] 页面搜索。
+这是 Bevy 社区插件的公示表。如果你自己已经开发并发布了 Bevy 插件，你可以 [把你的插件链接加入到这里][project::bevyassets]。
 
-Beware that some 3rd-party plugins may use unusual licenses! Be sure to
-check the license before using a plugin in your project.
+请注意，一些第三方插件可能使用不常用的许可证。在你的项目中使用某个插件之前，请务必检查其许可证。
 
 ---
 
-Other pages in this book with valuable information when using 3rd-party plugins:
+本书中的其他页面也会包含一些在使用第三方插件时的宝贵信息。:
 
-  - Some plugins may require you to [configure Bevy in some specific way][cb::features].
-  - If you are [using bleeding-edge unreleased Bevy (main)][cb::git], you may encounter difficulties with plugin compatibility.
+  - 哟肚饿插件可能要求你[用特定方式配置bevy][cb::features].
+  - 如果你[使用未发布的 Bevy (main)根治][cb::git], 你可能会遇到兼容性问题.

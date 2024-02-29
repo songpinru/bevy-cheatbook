@@ -2,18 +2,15 @@
 
 # Visual Studio Code
 
-If you are a VSCode user and you'd like something to be added to this page,
-please file a [GitHub Issue][project::cb::issues].
+如果你是 VSCode用户并且你想在这页增加一些内容,请提一个[GitHub Issue][project::cb::issues].
 
-## Rust Language Support
+## Rust 语言支持
 
-For good Rust support, install the Rust Analyzer plugin.
+为了更好支持Rust, 安装 Rust Analyzer 插件.
 
-### Speed Up Rust Analyzer
+### 加速 Rust Analyzer
 
-If you have used `.cargo/config.toml` to set a non-default linker for fast
-compiles, Rust Analyzer will ignore it unfortunately. You need to also
-configure RA to use it, with the following setting (in VSCode `settings.json`):
+如果你在 `.cargo/config.toml`设置了非默认的linker来加速编译,Rust Analyzer将会忽略它.你还要配置RA才能正常工作,按下面这样设置 (VSCode `settings.json`):
 
 Windows:
 
@@ -41,25 +38,19 @@ Linux (lld):
 
 ## `CARGO_MANIFEST_DIR`
 
-When running your app/game, Bevy will search for the `assets` folder in the path
-specified in the `BEVY_ASSET_ROOT` or `CARGO_MANIFEST_DIR` environment variable.
-This allows `cargo run` to work correctly from the terminal.
+运行你的app/game时,Bevy会搜索`BEVY_ASSET_ROOT` 或 `CARGO_MANIFEST_DIR`环境变量指定的`assets` 文件夹.
+这可以使`cargo run`在终端正确工作.
 
-If you want to run your project from VSCode in a non-standard way (say, inside a
-debugger), you have to be sure to set that correctly.
+如果你想通过VSCode的非标准方式(例如debugger)运行你的项目,你必须确认这个配置是生效的.
 
-If this is not set, Bevy will search for `assets` alongside the executable
-binary, in the same folder where it is located. This makes things easy for
-distribution. However, during development, since your executable is located
-in the `target` directory where `cargo` placed it, Bevy will be unable to
-find the `assets`.
+如果没有设置这个,bevy会在它所在的文件夹搜索可执行`assets`文件,这使得分发容易.但是在开发时,由于你的可执行文件被`cargo`放在了`target`目录,bevy不能正确找到`assets`.
 
-Here is a snippet showing how to create a run configuration for debugging Bevy
-(with `lldb`):
+下面的代码片段展示了怎么创建一个用于调试 Bevy 的运行配置
+(使用 `lldb`):
 
-(this is for development on Bevy itself, and testing with the `breakout` example)
+(这是为了开发 Bevy ,并使用`breakout`示例进行测试)
 
-(adapt to your needs if using for your project)
+(根据你的需求自行修改)
 
 ```json
 {
@@ -85,7 +76,7 @@ Here is a snippet showing how to create a run configuration for debugging Bevy
 }
 ```
 
-To support dynamic linking, you should also add the following, inside the `"env"` section:
+为了支持动态链接,你还应该在`"env"`部分中增加:
 
 Linux:
 
@@ -93,6 +84,6 @@ Linux:
 "LD_LIBRARY_PATH": "${workspaceFolder}/target/debug/deps:${env:HOME}/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib",
 ```
 
-(replace `stable-x86_64-unknown-linux-gnu` if you use a different toolchain/architecture)
+(如果你使用不同的工具链或者架构,记得替换 `stable-x86_64-unknown-linux-gnu` )
 
 Windows: I don't know. If you do, please [file an issue][project::cb::issues]!

@@ -1,35 +1,31 @@
 {{#include ../include/header012.md}}
 
-# Getting Started
+# 入门
 
-This page covers the basic setup needed for Bevy development.
+本页面涵盖Bevy开发所需的基本设置。
 
 ---
 
-For the most part, Bevy is just like any other Rust library. You need to
-install Rust and setup your dev environment just like for any other Rust
-project. You can install Rust using [Rustup][rustup]. See
-[Rust's official setup page][rust::getting-started].
+对于大多数情况，Bevy就像其他任何Rust库一样。
+您需要安装Rust并设置开发环境，就像其他任何Rust项目一样。
+您可以使用[Rustup][rustup]安装Rust。
+请参阅[Rust's official setup page][rust::getting-started]以获取更详细的说明。
 
-On Linux, you need the development files for some system libraries. See the
-[official Bevy Linux dependencies page][bevy::linux-dependencies].
+在Linux,您需要某些系统库的开发文件。请参阅[official Bevy Linux dependencies page][bevy::linux-dependencies].
 
-Also see the [Setup page in the official Bevy Book][bevy::getting-started]
-and the [official Bevy Readme][bevy::readme].
+另请参阅[Setup page in the official Bevy Book][bevy::getting-started]和[official Bevy Readme][bevy::readme].
 
-## Creating a New Project
+## 创建一个新项目
 
-You can simply create a new Rust project, either from your IDE/editor, or the commandline:
+你可以从IDE/编辑器或者命令行创建一个新的Rust项目:
 
 ```sh
 cargo new --bin my_game
 ```
 
-(creates a project called `my_game`)
+(创建一个名为 `my_game`的新工程)
 
-The `Cargo.toml` file contains all the configuration of your project.
-Add the latest version of `bevy` as a dependency. Your file should now
-look something like this:
+`Cargo.toml` 文件包含了项目的所有配置.添加最新版本的`bevy`依赖.文件应该看起来像这样:
 
 ```toml
 [package]
@@ -41,70 +37,50 @@ edition = "2021"
 bevy = "0.12"
 ```
 
-The `src/main.rs` file is your main source code file. This is where you
-start writing your Rust code. For a minimal Bevy [app][cb::app], you need
-at least the following:
+ `src/main.rs` 文件是你主要的源代码文件.从这里开始编写你的Rust代码.对于最小的Bevy [app][cb::app],你最少需要这样:
 
 ```rust,no_run,noplayground
 {{#include ../code012/examples/minimal.rs}}
 ```
 
-You can now compile and run your project. The first time, this will take a
-while, as it needs to build the whole Bevy engine and dependencies. Subsequent
-runs should be fast. You can do this from your IDE/editor, or the commandline:
+现在你可以编译并运行你的项目.在编译bevy以及依赖时需要花费一点时间.随后的运行应该很快.你可以从IDE/编辑器执行这个操作,以及命令行:
 
 ```sh
 cargo run
 ```
 
-## Documentation
+## 文档
 
-You can generate your own docs (like what is on [docs.rs](https://docs.rs)), for
-offline use, including everything from your own project and all dependencies, in
-one place.
+你可以这样生成包含你的项目和所有依赖的离线文档 (类似 [docs.rs](https://docs.rs)), 用于脱机使用
 
 ```sh
 cargo doc --open
 ```
 
-This will build all the HTML docs and open them in your web browser.
+这各命令会生成HTML文档并在你的浏览器中打开.
 
-It does not require an internet connection, and gives you an easy way to search
-the API docs for all crates in your dependency tree all at once. It is more
-useful than the online version of the docs.
+这不需要网络连接,并给你提供了一种方便的方式搜索你用到的依赖的API文档,通常比在线版本的文档更有用.
 
-## Optional Extra Setup
+## 可选的其他配置
 
-You will likely quickly run into unusably slow performance with the default
-Rust unoptimized dev builds. [See here how to fix.][pitfall::perf]
+很快你就可能在Rust默认的dev环境构建时遇到性能低下问题.[参考这里解决.][pitfall::perf]
 
-Iterative recompilation speed is important to keep you productive, so you don't
-have to wait long for the Rust compiler to rebuild your project every time you
-want to test your game. [Bevy's getting started page][bevy::getting-started]
-has advice about how to speed up compile times.
+在持续开发时,重新编译的速度对你很重要,你不必每次测试时都等待Rust编译,构建.[Bevy 入门][bevy::getting-started]里有一些提高编译速度的建议.
 
-Also have a look in the [Dev Tools and Editors][cb::tools] page for suggestions
-about additional external dev tools that may be helpful.
+你也可以看看[Dev Tools and Editors][cb::tools],里面有一些可能有用的外部开发工具.
 
-## What's Next?
+## 接下来是?
 
-Have a look at the [guided tutorial][chapter::tutorial] page of this book,
-and Bevy's [official examples][bevy::examples].
+看看这本书的 [guided tutorial][chapter::tutorial] ,和Bevy提供的 [official examples][bevy::examples]
 
-Check out the [Bevy Assets Website][bevy::assets] to find other tutorials
-and learning resources from the community, and [plugins][cb::3rdparty]
-to use in your project.
+在[Bevy Assets Website][bevy::assets]可以找到社区提供的其他教程,学习资源,以及可以用到你项目里的[plugins][cb::3rdparty].
 
-Join the community on [Discord][bevy::discord] to chat with us!
+加入社区的 [Discord][bevy::discord] 和我们交流!
 
-## Running into Issues?
+## 运行遇到问题?
 
-If something is not working, be sure to check the [Common
-Pitfalls][chapter::pitfalls] chapter, to see if this book has something to
-help you. Solutions to some of the most common issues that Bevy community
-members have encountered are documented there.
+如果遇到问题,先看看[Common Pitfalls][chapter::pitfalls] 是否可以帮助到你. Bevy 社区成员最常见的一些问题的解决方案都记录在那里.
 
-If you need help, use [GitHub Discussions][bevy::ghdiscussions], or feel
-welcome to come chat and ask for help in [Discord][bevy::discord].
+如果需要帮助, 使用 [GitHub Discussions][bevy::ghdiscussions], 或者欢迎在 [Discord][bevy::discord]向我们寻求帮助.
 
 {{#include ../include/gpu-driver-requirements.md}}

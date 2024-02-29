@@ -1,17 +1,13 @@
 {{#include ../include/header012.md}}
 
-# Text Editor / IDE
+# 文本编辑器 / IDE
 
-This sub-chapter contains tips for different text editors and IDEs.
+这一章节是关于不同编辑器和IDE的一些建议.
 
-Bevy is, for the most part, like any other Rust project. If your editor/IDE
-is set up for Rust, that might be all you need. This sub-chapter contains
-additional information that may be useful for Bevy specifically.
+Bevy和其他绝大多数的Rust项目一样,你需要为你的编辑器/IDE适配Rust.子章节含有针对Bevy更详细的信息.
 
-If you have any tips/advice/configurations for your editor of choice,
-that you'd like to share with the community, please create a
-[GitHub Issue][project::cb::issues], so we can add it to the book.
-If your editor is not in the list, I will add it.
+如果你有任何关于编辑器的建议,你可以创建一个[GitHub Issue][project::cb::issues]来向社区分享,以便我们可以加到本书.
+如果你的编辑器不在下面这个列表,提出issue后我可以增加.
 
 - [Visual Studio Code][cb::ide::vscode]
 - [JetBrains (RustRover, IntelliJ, CLion)][cb::ide::jetbrains]

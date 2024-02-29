@@ -1,36 +1,27 @@
 {{#include ../include/header011.md}}
 
-# Dev Tools and Editors for Bevy
+# Bevy开发工具和编辑器
 
-Bevy does not yet have an official editor or other such tools. An official
-editor is planned as a long-term future goal. In the meantime, here are
-some community-made tools to help you.
+Becy目前还没有官方的百年机器或者类似工具.推出一个官方的编辑器是长远的计划,在此之前,有一些社区提供的工具或许可以帮助到你
 
 ---
 
-## Editor
+## 编辑器
 
-[`bevy_inspector_egui`][project::bevy_inspector_egui] gives you a simple
-editor-like property inspector window in-game. It lets you modify the values of
-your components and resources in real-time as the game is running.
+[`bevy_inspector_egui`][project::bevy_inspector_egui] 在游戏中给你提供一个类似编辑器的属性检查窗.
+让你可以在游戏中实时修改你的components 和 resources的值.
 
-[`bevy_editor_pls`][project::bevy_editor_pls] is an editor-like interface that
-you can embed into your game. It has even more features, like switching app
-states, fly camera, performance diagnostics, and inspector panels.
+[`bevy_editor_pls`][project::bevy_editor_pls] 是一个可以内嵌到游戏中的类编辑器接口.
+它有许多功能,比如切换app状态,飞行相机,性能诊断,还有检查器面板.
 
-[`space_editor`][project::space_editor] is another such editor that can be
-embedded into your game. It seems to be designed for a Unity-inspired prefab
-workflow.
+[`space_editor`][project::space_editor] 另一个可以内嵌到游戏中的编辑器.
+有点像是个受Unity启发的预制工作流.
 
-You can also use [Blender][project::blender] as a level/scene editor,
-by exporting your scenes to [GLTF][cb::gltf]. The [Blender Bevy Components
-Workflow][project::blender_bevy_components_workflow] project improves on this
-experience, by allowing you to setup your Bevy ECS [Components][cb::component]
-in Blender, include them in the exported GLTF, and use them in Bevy.
+你也可以把 [Blender][project::blender] 用作关卡/场景编辑器,把你爹场景导出为[GLTF][cb::gltf].
+[Blender Bevy Components Workflow][project::blender_bevy_components_workflow] 这个项目提供了这种经验,
+通过在Blender配置你的Bevy ECS [Components][cb::component] ,将它们包含在导出的 GLTF 中,并在 Bevy 中使用它们.
 
-## Diagnostics
+## 分析工具
 
-[`bevy_mod_debugdump`][project::bevy_mod_debugdump] is a tool to help visualize
-your [App Schedules](../programming/app-builder.md) (all of the registered
-[systems](../programming/systems.md) with their [ordering
-dependencies](../programming/system-order.md)), and the Bevy Render Graph.
+[`bevy_mod_debugdump`][project::bevy_mod_debugdump] 一个针对[App Schedules](../programming/app-builder.md) (所有已注册的
+[systems](../programming/systems.md) , [依赖顺序](../programming/system-order.md)), 和 Bevy 渲染图的可视化工具.

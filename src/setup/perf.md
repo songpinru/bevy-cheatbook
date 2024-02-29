@@ -1,68 +1,48 @@
 {{#include ../include/header012.md}}
 
-# Performance Tunables
+# 性能调优
 
-Bevy offers a lot of features that should improve performance in most cases, and
-most of them are enabled by default. However, they might be detrimental to some
-projects.
+Bevy提供了很多可以在大多数场景提高性能的特性,这些特性大多数都是默认开启的.然而在某些项目中,这可能是负优化.
 
-Luckily, most of them are configurable. Most users should probably not touch
-these settings, but if your game does not perform well with Bevy's default
-configuration, this page will show you some things you can try to change, to see
-if they help your project.
+幸运的是,他们中的大多数都是可配置的.绝大多数的使用者都不该更改这些设置,
+但如果你的game在默认配置下遇到性能问题,这个页面会告诉你一些可以尝试修改的项,看看他们是否能帮助你.
 
-Bevy's default configruation is designed with *scalability* in mind. That is, so
-that you don't have to worry too much about performance, as you add more
-features and complexity to your project. Bevy will automatically take care to
-distribute the workload as to make good use of the available hardware (GPU, CPU
-multithreading).
+Bevy设计默认配置时是考虑了*可伸缩性的*.也就是说,当你在项目中添加更多的功能和复杂性时,不用太过担心性能.
+Bevy会为充分利用可用的硬件(GPU,CPU,多线程)而自动分配负载.
 
-However, it might hurt simpler projects or have undesirable implications in some
-cases.
+然而,这可能对简单的项目有负作用,或者在某些场景下有不良影响.
 
-This trade-off is good, because small and simple games will probably be fast
-enough anyway, even with the additional overhead, but large and complex games
-will benefit from the advanced scheduling to avoid bottlenecks. You can
-develop your game without performance degrading much as you add more stuff.
+这个取舍是合理的,因为小而简单的游戏无论如何都会很快,即使有其他的开销,但是大而复杂的游戏会从这种先进的调度器中收益,从而避免瓶颈.
+在开发游戏时，不会因为添加更多内容而降低性能。
 
-## Multithreading Overhead
+## 多线程开销
 
-Bevy has a smart multithreaded executor, so that your [systems][cb::system] can
-automatically [run in parallel][cb::ecs-intro-code] across multiple CPU cores,
-when they don't need conflicting access to the same data, while [honoring ordering
-constraints][cb::system-order]. This is great, because you can just keep adding
-more systems to do different things and implement more features in your game,
-and Bevy will make good use of modern multi-core CPUs with no effort from you!
+Bevy有一个智能的多线程执行器,你的[systems][cb::system]可以自动在多个CPU内核之间[并行执行][cb::ecs-intro-code],
+当没有数据访问冲突时, [遵守排序约束][cb::system-order].
+这是非常棒的,因为你可以持续添加system来做更多的事,并在你的游戏中实现更多的特性,Bevy会让你毫不费力的充分利用现代多核CPU!
 
-However, the smart scheduling adds some overhead to all common operations (such
-as every time a [system][cb::system] runs). In projects that have little work to
-do every frame, especially if all of your systems complete very quickly, the
-overhead can add up to overshadow the actual useful work you are doing!
+然而,智能调度器会给所有常用操作(例如每次 [system][cb::system]运行)带来一些额外开销.
+在每一帧中几乎没有工作的项目,尤其是如果你的system完成的非常快,那么所有的这些开销加起来会远超实际的工作.
 
-You might want to try disabling multithreading, to see if your game might
-perform better without it.
+你可能想禁用多线程,实时禁用后你的游戏会不会表现更好.
 
-### Disabling Multithreading for Update Schedule Only
+### 只在Update时禁用多线程
 
-Multithreading can be disabled per-[schedule][cb::schedule]. This means it
-is easy to disable it only for your code / game logic (in the `Update` schedule),
-while still leaving it enabled for all the Bevy engine internal systems.
+多线程可以在每个[调度阶段][cb::schedule]禁用.这意味着可以很容易只在你的代码/游戏逻辑(在`Update`时)中禁用多线程,Bevy引擎内部的systems仍旧保持启用.
 
-This could speed up simple games that don't have much gameplay logic, while still
-letting the engine run with multithreading.
+这能加速一些没有太多游戏逻辑的简单游戏,但引擎仍多线程运行.
 
-You can edit the settings of a specific [schedule][cb::schedule] via the [app builder][cb::app]:
+你可以通过[app builder][cb::app]编辑特定的[schedule][cb::schedule]设置 :
 
 ```rust,no_run,noplayground
 {{#include ../code012/src/setup/perf.rs:singlethread-updateonly}}
 ```
 
-### Disabling Multithreading Completely
+### 完全禁用多线程
 
-If you want to try to completely disable multithreading for everything,
-you can do so by removing the `multi-threaded` default Cargo feature.
+如果你想完全禁用多线程,你可以移除`multi-threaded`这个cargo特性.
 
-In `Cargo.toml`
+ `Cargo.toml`
 
 ```toml
 [dependencies.bevy]
@@ -74,34 +54,28 @@ features = [
 ]
 ```
 
-[(see here for how to configure Bevy's cargo features)][cb::features]
+[(如何为bevy配置cargo特性)][cb::features]
 
-This is generally not recommended. Bevy is designed to work with multithreading.
-Only consider it if you really need it (like if you are making a special build
-of your project to run on a system where it makes sense, like WASM or old
-hardware).
+通常这是不推荐的.Bevy是为多线程设计的.只有在你真的需要的时候(你要进行确实需要如此的特殊构建,例如WASM或者老的硬件)再考虑它.
 
-## Multithreading Configuration
+##多线程配置
 
-You can configure how many CPU threads Bevy uses.
+你可以配置Bevy使用多少CPU线程.
 
-Bevy creates threads for 3 different purposes:
- - Compute: where all your systems and all per-frame work is run
- - AsyncCompute: for background processing independent from framerate
- - I/O: for loading of assets and other disk/network activity
+Bevy为三个不同的目的创建线程:
+ - Compute: 你的system运行时和每一帧工作时
+ - AsyncCompute: 独立于帧率的后台处理
+ - I/O: 加载资源和其他的磁盘/网络活动
 
-By default, Bevy *splits/partitions* the available CPU threads as follows:
- - I/O: 25% of the available CPU threads, minimum 1, maximum 4
- - AsyncCompute: 25% of the available CPU threads, minimum 1, maximum 4
- - Compute: all remaining threads
+默认条件下, Bevy在以下情况 *拆分/分区* 可用的CPU线程:
+ - I/O: 25% 可用CPU线程, 最小 1, 最大 4
+ - AsyncCompute: 25% 可用CPU线程, 最小 1, 最大 4
+ - Compute: 所有剩余的线程
 
-This means *no overprovisioning*. Every hardware CPU thread is used
-for one specific purpose.
+这意味着没有 *过度规划* .每个硬件CPU线程都用于一个特定的目的.
 
-This provides a good balance for mixed CPU workloads. Particularly for games
-that load a lot of assets (especially if assets are loaded dynamically during
-gameplay), the dedicated I/O threads will reduce stuttering and load times.
-Background computation will not affect your framerate. Etc.
+这为混合CPU负载提供了平衡.尤其是那些加载了很多资源(特别是游戏中动态加载的资源)的游戏,专用的I/O线程将减少停顿和加载时间.
+后台计算将不会影响帧率等.
 
 Examples:
 
@@ -117,115 +91,84 @@ Examples:
 |24               |4    |4             |16       |
 |32               |4    |4             |24       |
 
-Note: Bevy does not currently have any special handling for asymmetric
-(big.LITTLE or Intel P/E cores) CPUs. In an ideal world, maybe it would be nice
-to use the number of big/P cores for Compute and little/E cores for I/O.
+Note: Bevy 目前没有为对非对称（big.LITTLE或Intel P/E内核）CPU做特殊处理.
+在理想条件下,使用big/P的核数用于计算,little/E核数用于I/O会比较好.
 
-### Overprovisioning
+### 过度规划
 
-However, if your game does very little I/O (asset loading) or background
-computation, this default configuration might be sub-optimal. Those threads will
-be sitting idle a lot of the time. Meanwhile, Compute, which is your frame
-update loop and is important to your game's overall framerate, is limited to
-fewer threads. This can be especially bad on CPUs with few cores (less than 4
-total threads).
+如果你的游戏使用非常少的I/O(资源加载)或者后台计算,默认配置可能不是最优的.这些线程大多时间都会空闲.
+与此同时,对游戏帧率很重要的帧更新循环计算,被限制在了少数线程.这在少核CPU(少于4线程)影响更严重.
 
-For example, in my projects, I usually load all my assets during a loading
-screen, so the I/O threads are unused during normal gameplay. I rarely use
-AsyncCompute.
+例如,在我的项目中,我通常在加载场景时加载所有的资源,因此I/O线程通常在游戏过程中没有被使用.
+我很少使用异步计算.
 
-If your game is like that, you might want to make all CPU threads available for
-Compute. This could boost your framerate, especially on CPUs with few cores.
-However, any AsyncCompute or I/O workloads during gameplay could impact your
-game's performance / framerate consistency.
+如果你的游戏也是如此,你可能想让所有的CPU线程可以被用于计算.这可以提升你的帧率,尤其是少核的CPU上.
+然而,任何游戏过程中的异步计算或者I/O负载都会影响你的游戏性能/帧率稳定性.
 
-Here is how to do that:
+下main时如何修改:
 
 ```rust,no_run,noplayground
 {{#include ../code012/src/setup/perf.rs:taskpool-overprovision}}
 ```
 
-And here is an example of an entirely custom configuration:
+这是一个完整自定义配置项的示例:
 
 ```rust,no_run,noplayground
 {{#include ../code012/src/setup/perf.rs:taskpool-custom}}
 ```
 
-## Pipelined Rendering
+## 流水线渲染
 
-Bevy has a [pipelined rendering architecture][cb::render-architecture]. This
-means Bevy's GPU-related [systems][cb::system] (that run on the CPU to prepare
-work for the GPU every frame) will run in parallel with all the normal systems
-for the next frame. Bevy will render the previous frame in parallel with the
-next frame update.
+Bevy 有[流水线渲染架构][cb::render-architecture]. 这意味着Bevy中和GPU相关的[systems][cb::system](这些system运行在CPU上，但为每一帧的GPU工作做准备)将与下一帧的所有正常system并行运行.
+Bevy将并行渲染前一帧和下一帧的更新。
 
-This will improve GPU utilization (make it less likely the GPU will sit idle
-waiting for the CPU to give it work to do), by making better use of CPU
-multithreading. Typically, it can result in 10-30% higher framerate, sometimes
-more.
+这将通过更好地利用CPU的多线程能力来提高GPU的利用率（减少GPU空闲等待CPU分配任务的可能性）.
+通常，这可以带来10-30%的更高帧率，有时甚至更多。
 
-However, it can also affect perceived input latency ("click-to-photon"
-latency), often for the worse. The effects of the player's input might be
-shown on screen delayed by one frame. It might be compensated by the faster
-framerate, or it might not be. Here is a diagram to visualize what happens:
+然而，这种并行处理也可能影响感知输入延迟（即“点击到显示”延迟），而且通常会使延迟变得更糟。
+玩家的输入效果可能会在屏幕上延迟一帧才显示出来。这种延迟可能会被更高的帧率所补偿，也可能不会。
+下面是一个图表，用于可视化这种情况：
 
 ![Timeline comparing pipelined and non-pipelined rendering. In the pipelined
 case, one additional frame is displayed before the effects of the mouse click
 can be seen on-screen.](/img/pipelined-latency.png)
 
-The actual mouse click happens in-between frames. In both cases, frame #4 is
-when the input is detected by Bevy. In the pipelined case, rendering
-of the previous frame is done in parallel, so an additional frame without
-the input appears on-screen.
+实际鼠标点击发生在帧与帧之间.上面图中,#4帧时Bevy检测到输入.
+在流水线模式下,前一帧的渲染是并行完成的,因此输入不会影响到下一帧的频幕显示.
 
-Without pipelining, the user will see their input delayed by 1 frame. With
-pipelining, it will be delayed by 2 frames.
+非流水线模式下,用户输入会延迟1帧.流水线模式下,用户输入会延迟2帧.
 
-However, in the diagram above, the frame rate increase from pipelining is
-big enough that overall the input is processed and displayed sooner. Your
-application might not be so lucky.
+然而，在上图中，帧速率大到足以使由于流水线渲染而增加的输入延迟更快地被处理和显示。你的应用程序可能并没有这么幸运。
 
 ---
 
-If you care more about latency than framerate, you might want to disable
-pipelined rendering. For the best latency, you probably also want to
-[disable VSync][cb::vsync].
+如果你关心延迟超过帧率,你可能想关闭流水线渲染.为了最低延迟,你可能想[禁用 VSync][cb::vsync].
 
-Here is how to disable pipelined rendering:
+这痒关闭流水线渲染:
 
 ```rust,no_run,noplayground
 {{#include ../code012/src/setup/perf.rs:disable-pipelined-rendering}}
 ```
 
-## Clustered Forward Rendering
+## 集群前向渲染
 
-By default, Bevy uses a Clustered Forward Rendering architecture for 3D.  The
-viewport (on-screen area where the game is displayed) is split into
-rectangles/voxels, so that the lighting can be handled separately for each small
-portion of the scene. This allows you to use many lights in your 3D scenes,
-without destroying performance.
+默认情况下，Bevy使用集群前向渲染架构来处理3D渲染。
+视口（显示游戏画面的屏幕区域）被分割成矩形/体素，以便可以独立处理场景中每个小部分的光照。
+这允许你在3D场景中使用大量灯光，而不会破坏性能。
 
-The dimensions of these clusters can affect rendering performance. The default
-settings are good for most 3D games, but fine-tuning them could improve
-performance, depending on your game.
+这些集群的尺寸会影响渲染性能。默认设置对于大多数3D游戏来说都是不错的，但根据你的游戏进行微调可能会提高性能。
 
-In games with a top-down-view camera (such as many strategy and simulation
-games), most of the lights tend to be a similar distance away from the camera.
-In such cases, you might want to reduce the number of Z slices (so that the
-screen is split into smaller X/Y rectangles, but each one covering more
-distance/depth):
+在采用俯视视角的游戏（如许多策略和模拟游戏）中，大多数灯光往往与相机的距离相似。
+在这种情况下，你可能希望减少Z切片的数量（这样屏幕就被分割成更小的X/Y矩形，但每个矩形覆盖更多的距离/深度）：
 
 ```rust,no_run,noplayground
 {{#include ../code012/src/setup/perf.rs:cluster-smallz}}
 ```
 
-For games that use very few lights, or where lights affect the entire scene (
-such as inside a small room / indoor area), you might want to try disabling
-clustering:
+对于使用非常少的灯光或灯光影响整个场景的游戏（例如在小房间/室内区域），您可能想要尝试禁用集群渲染:
 
 ```rust,no_run,noplayground
 {{#include ../code012/src/setup/perf.rs:cluster-single}}
 ```
 
-Changing these settings will probably result in bad performance for many games,
-outside of the specific scenarios described above.
+除非在特殊情况下,修改这些设置可能会降低性能.

@@ -2,14 +2,11 @@
 
 # JetBrains (RustRover, IntelliJ, CLion)
 
-If you are a JetBrains user and you'd like something to be added to this page,
-please file a [GitHub Issue][project::cb::issues].
+如果你是JetBrains 用户并且你想在这页增加一些内容,请提一个 [GitHub Issue][project::cb::issues].
 
-## Rust Language Support
+## Rust 语言支持
 
-When using [queries][cb::query], type information gets lost due to Bevy relying
-on procedural macros. You can fix this by enabling [procedural macro
-support][intellij-rust::6908] in the IDE.
+使用 [queries][cb::query] 时, 由于Bevy使用了过程宏,类型信息会丢失.可以启用[procedural macro support][intellij-rust::6908]来修复.
 
-1. type `Experimental feature` in the dialog of the `Help | Find Action` action
-2. enable the features `org.rust.cargo.evaluate.build.scripts` and `org.rust.macros.proc`
+1. 在 `Help | Find Action` 对话框中输入`Experimental feature`
+2. 启用 `org.rust.cargo.evaluate.build.scripts` 和 `org.rust.macros.proc`

@@ -1,24 +1,23 @@
 {{#include ../include/header012.md}}
 
-# Configuring Bevy
+# 配置 Bevy
 
-Bevy is very modular and configurable. It is implemented as many separate
-cargo crates, allowing you to remove the parts you don't need. Higher-level
-functionality is built on top of lower-level foundational crates, and can
-be disabled or replaced with alternatives.
+Bevy 是非常模块化和可配置化的.它被实现为由许多独立的 cargo crates 组成，允许你删除你不需要的部分。
+较高级别的功能建立在较底层的基础库之上，并且可以禁用或进行替换。
 
-The lower-level core crates (like the Bevy ECS) can also be used completely
-standalone, or integrated into otherwise non-Bevy projects.
+底层的核心库（如 Bevy ECS）也可以完全独立使用，或者集成到其他非 Bevy 项目中。
+
 
 ## Bevy Cargo Features
 
-In Bevy projects, you can enable/disable various parts of Bevy using cargo features.
+在 Bevy 项目中，你可以使用 cargo 的 feature 特性启用或禁用 Bevy 的各个功能。
 
-Many common features are enabled by default. If you want to disable some of
-them, you need to disable all of them and re-enable the ones you need.
-Unfortunately, Cargo does not let you just disable individual default features.
+这里我将解释其中的一部分，以及为什么你可能想要自己设置这些 feature。
 
-Here is how you might configure your Bevy:
+许多常见的功能在默认情况下是启用的。如果你想禁用其中一些，
+请注意，不幸的是，Cargo 不允许你禁用个别的默认功能，所以你需要先禁用全部默认的 Bevy 功能后，再重新启用你想要的功能。
+
+下面是一个你可能会用到的 Bevy 配置：
 
 ```toml
 [dependencies.bevy]
@@ -107,116 +106,91 @@ features = [
 ]
 ```
 
-(See [here][bevy::features] for a full list of Bevy's cargo features.)
+( [here][bevy::features] 有bevy 可通过 cargo 配置的功能清单.)
 
-### Graphics / Rendering
+### 图形 / 渲染
 
-For a graphical application or game (most Bevy projects), you can include
-`bevy_winit` and your selection of Rendering features. For
-[Linux][platform::linux] support, you need at least one of `x11` or `wayland`.
+对于一个图形化的应用程序或游戏（大多数 Bevy 项目），你需要 `bevy_winit` 和你选择的渲染特性.
+对于[Linux][platform::linux] 支持, 你至少需要 `x11` 或 `wayland`中的一个.
 
-`bevy_render` and `bevy_core_pipeline` are required for any application using
-Bevy rendering.
+所有使用Bevy渲染的应用,都要有 `bevy_render` 和 `bevy_core_pipeline`.
 
-If you only need 2D and no 3D, add `bevy_sprite`.
+如果你只需要2D不需要3D,添加`bevy_sprite`.
 
-If you only need 3D and no 2D, add `bevy_pbr`. If you are [loading 3D models
-from GLTF files][cb::gltf], add `bevy_gltf`.
+如果你只需要3D不需要2D,添加 `bevy_pbr`. 如果你 [通过GLTG文件加载 3D 模型][cb::gltf], 添加 `bevy_gltf`.
 
-If you are using Bevy UI, you need `bevy_text` and `bevy_ui`. `default_font`
-embeds a simple font file, which can be useful for prototyping, so you don't
-need to have a font asset in your project. In a real project, you probably
-want to use your own fonts, so your text can look good with your game's art
-style. In that case, you can disable the `default_font` feature.
+如果你使用Bevy UI,你需要`bevy_text` 和 `bevy_ui`. 
+`default_font`内置了一个简单的字体文件,这对原型设计很有用,因此你的项目中不必有字体资源.
+在实际的项目中,为了你的游戏美术风格看起来不错,你或许想要使用自己的字体.
+这时你可以禁用`default_font`特性.
 
-If you want to draw debug lines and shapes on-screen, add `bevy_gizmos`.
+如果你想在屏幕上绘制调试线条和形状,添加`bevy_gizmos`.
 
-If you don't need any graphics (like for a dedicated game server, scientific
-simulation, etc.), you may remove all of these features.
+如果你不需要任何图形(例如例如专用游戏服务器，科学模拟器等),您可以删除所有这些功能.
 
-### File Formats
+### 文件格式
 
-You can use the relevant cargo features to enable/disable support for loading
-assets with various different file formats.
+你可以使用cargo来启用/禁用 各种不同文件格式加载资源 的支持
 
-See [here][builtins::file-formats] for more information.
+ [here][builtins::file-formats] 有详细信息.
 
-### Input Devices
+### 输入设备
 
-If you do not care about [gamepad (controller/joystick)][input::gamepad]
-support, you can disable `bevy_gilrs`.
+如果你不关心 [手柄(控制器/遥感)][input::gamepad] 支持,你可以禁用 `bevy_gilrs`.
 
-### Platform-specific
+### 特殊平台
 
 #### Linux Windowing Backend
 
-On [Linux][platform::linux], you can choose to support X11, Wayland,
-or both. Only `x11` is enabled by default, as it is the legacy system
-that should be compatible with most/all distributions, to make your builds
-smaller and compile faster. You might want to additionally enable `wayland`,
-to fully and natively support modern Linux environments. This will add a few
-extra transitive dependencies to your project.
+在 [Linux][platform::linux], 你可以选择支持X11, Wayland,或者两个都支持.只有`x11` 是默认开启的, 因为这是传统的视窗后端系统,
+它与大多数或甚至于所有的 Linux 发行版兼容这可以使你的工程构建文件更小、编译更快。你可能想额外启用 `wayland` 来完全支持现代 Linux 环境。这将为你的项目增加一些额外的依赖。
 
-Some Linux distros or platforms might struggle with X11 and work better with
-Wayland. You should enable both for best compatibility.
+某些 Linux 发行版或平台可能会在 X11 上遇到困难，但对 Wayland支持更好。您应该同时启用两者以获得最佳兼容性。
 
 #### WebGPU vs WebGL2
 
-On [Web/WASM][platform::web], you have a choice between these two rendering backends.
+在 [Web/WASM][platform::web], 你可以在这两种渲染后端中选择.
 
-WebGPU is the modern experimental solution, offering good performance and
-full feature support, but browser support for it is limited (only known to
-work in very recent versions of Chrome and Firefox nightly).
 
-WebGL2 gives the best compatibility with all browsers, but has worse performance
-and some limitations on what kinds of graphics features you can use in Bevy.
+WebGPU 是现代实验性的解决方案,提供了更好的性能和更全的特性支持,
+但是浏览器支持有限(只知道最近几个nightly版本的Chrome 和 Firefox中有用)
 
-The `webgl2` cargo feature selects WebGL2 if enabled. If disabled, WebGPU is used.
+WebGL2 与所有浏览器的兼容性最好,但是性能低下,并且你在bevy中使用的一些图形特性会受到限制.
 
-### Development Features
+cargo feature 启用`webgl2` 将会选择 WebGL2 , 否则使用 WebGPU.
 
-While you are developing your project, these features might be useful:
+### 开发阶段的特性
 
-#### Asset hot-reloading and processing
+在开发你的项目时,这些特性可能会有用:
 
-The `file_watcher` feature enables support for [hot-reloading of
-assets][cb::asset-hotreload], supported on desktop platforms.
+#### 资源热加载和热处理
 
-The `asset_processor` feature enables support for [asset
-processing][cb::asset-processor], allowing you to automatically convert and
-optimize assets during development.
+ `file_watcher` 特性会启用 [资源热加载][cb::asset-hotreload]支持, 桌面平台上可用.
 
-#### Dynamic Linking
+`asset_processor` 特性会启用 [资源处理][cb::asset-processor], 允许你在开发时自动转换和调优资源.
 
-`dynamic_linking` causes Bevy to be built and linked as a shared/dynamic
-library. This will make recompilation *much* faster during development.
+#### 动态链接
 
-This is only supported on desktop platforms. Known to work very well on Linux.
-Windows and macOS are also supported, but are less tested and have had issues in
-the past.
+`dynamic_linking` 会使 Bevy 作为一个共享的动态库被构建和链接.,这将加快重构建的速度.
 
-It is not recommended to enable this for release builds you intend to publish
-to other people, unless you have a very good special reason to and you know
-what you are doing. It introduces unneeded complexity (you need to bundle
-extra files) and potential for things to not work correctly. You should only
-use it during development.
+这只支持桌面平台.已知在Linux上运行的不错.Windows 和 macOS 也支持,但是测试比较少,曾经还遇到过问题.
 
-For this reason, it may be convenient to specify the feature as a commandline
-option to `cargo`, instead of putting it in your `Cargo.toml`. Simply run your
-project like this:
+建议不要在推送给别人的release版本中启用此功能 ,除非你有特别的原因并且你知道你在做什么.
+它引入了不必要的复杂性（你需要捆绑额外的文件），并有可能导致程序不能正常运行。尽可能只在开发过程中使用这个功能。
+
+基于以上分析，可把这个功能作为  `cargo` 的一个命令行选项来指定，而不是把它放在`Cargo.toml` 中，可能会更方便。
+只需像下面这样运行你的项目：
 
 ```sh
 cargo run --features bevy/dynamic_linking
 ```
 
-You could also add this to your [IDE/editor configuration][cb::ide].
+可以添加这个到你的 [IDE/编辑器 配置][cb::ide].
 
 #### Tracing
 
-The features `trace` and `wgpu_trace` may be useful for profiling and
-diagnosing performance issues.
+`trace` 和 `wgpu_trace` 特性在分析和诊断性能问题时可能会很有用.
 
-`trace_chrome` and `trace_tracy` choose the backend you want to use to
-visualize the traces.
+`trace_chrome` 和 `trace_tracy` 特性用于选择你想用来可视化跟踪的后端.
 
-See [Bevy's official docs on profiling][bevy::profiling] to learn more.
+更多请参考 [Bevy's official docs on profiling][bevy::profiling] .
