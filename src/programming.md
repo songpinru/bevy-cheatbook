@@ -1,20 +1,13 @@
 {{#include ./include/header-none.md}}
 
-# Bevy Programming Framework
+# Bevy 编程框架
 
-This chapter presents the features of the Bevy core programming framework. This
-covers the ECS (Entity Component System), App and Scheduling.
+本章介绍了Bevy核心编程框架的特性.包括了ESC(Entity Component System),App,和Scheduling.
 
-All the knowledge of this chapter is useful even if you want to use Bevy as
-something other than a game engine. For example: using just the ECS for a
-scientific simulation.
+这一章非常重要,即使你想把Bevy用于游戏引擎以外的事情,例如:仅使用ESC做科学模拟.
 
-Hence, this chapter does not cover the game-engine parts of Bevy. Those
-features are covered in other chapters of the book. You can start with
-[游戏引擎基础][chapter::fundamentals] chapter.
+因此,这一章不包含Bevy的游戏引擎部分.游戏引擎部分在本书的其他章节.你可以从[游戏引擎基础][chapter::fundamentals]开始学习.
 
-For additional of programming patterns and idioms, see the [Programming
-Patterns][chapter::patterns] chapter.
+对于编程模式和习惯,请看[编程模式][chapter::patterns].
 
-If you are also interested in GPU programming, see the [Bevy GPU
-Framework][chapter::gpu] chapter.
+如果你也对GPU编程感兴趣,请看 [Bevy GPU Framework][chapter::gpu].

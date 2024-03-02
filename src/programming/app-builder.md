@@ -1,80 +1,63 @@
 {{#include ../include/header012.md}}
 
-# The App
+# App
 
-Relevant official examples: All of them ;)
+可参考的官方例子：所有例子 :)
 
-In particular, check out the complete game examples:
+特别是可以看看完整的游戏例子:
 [`alien_cake_addict`][example::alien_cake_addict],
 [`breakout`][example::breakout].
 
 ---
-
-To enter the Bevy runtime, you need to configure an [`App`][bevy::App]. The app
-is how you define the structure of all the things that make up your project:
-[plugins][cb::plugin], [systems][cb::system] (and their configuration/metadata:
+要进入Bevy的runtime,你需要配置一个 [`App`][bevy::App].通过App你可以定义构成你的项目的所有组成部分:
+[plugins][cb::plugin], [systems][cb::system] (及其configuration/metadata:
 [run conditions][cb::rc], [ordering][cb::system-order], [sets][cb::systemset]),
-[event][cb::event] types, [states][cb::state], [schedules][cb::schedule]…
+[event][cb::event] 类型, [states][cb::state], [schedules][cb::schedule]…
 
-You typically create your [`App`][bevy::App] in your project's `main` function.
-However, you don't have to add everything from there. If you want to add things
-to your app from multiple places (like other Rust files or crates), use
-[plugins][cb::plugin]. As your project grows, you will need to do that to keep
-everything organized.
+通常在项目的 `main`函数中创建[`App`][bevy::App].但是你不必在main里添加所有的东西.
+如果你想从多个地方(比如Rust文件或者crate)给app添加功能,使用[plugins][cb::plugin].
+随着你的项目发展,你需要这样来保持项目整洁.
 
 ```rust,no_run,noplayground
 {{#include ../code012/src/programming/app_builder.rs:main}}
 ```
 
-Note: use tuples with `add_systems`/`add_plugins`/`configure_sets` to add
-multiple things at once.
+注意:`add_systems`/`add_plugins`/`configure_sets` 函数可使用元组一次性添加多个项.
 
-[Component][cb::component] types do not need to be registered.
+[Component][cb::component] 不需要被注册.
 
-Schedules cannot [(yet)][bevy::279] be modified at runtime; all
-[systems][cb::system] you want to run must be added/configured in the
-[`App`][bevy::App] ahead of time. You can control individual systems using [run
-conditions][cb::rc]. You can also [dynamically enable/disable entire
-schedules][cb::schedule-dynamic] using the
-[`MainScheduleOrder`][bevy::MainScheduleOrder] [resource][cb::res].
+Schedule（[还][bevy::279]）不能在运行时修改，你想运行的所有[systems][cb::system]必须提前在 [`App`][bevy::App] 中添加/配置.
+你可以使用[运行条件][cb::rc]控制各个system.也可以使用[`MainScheduleOrder`][bevy::MainScheduleOrder] [resource][cb::res] [动态启用/禁用触发条件][cb::schedule-dynamic].
 
-## Builtin Bevy Functionality
+## Bevy内置功能
 
-The Bevy game engine's own functionality is represented as a [plugin group][cb::plugingroup].
-Every typical Bevy app must first add it, using either:
- - [`DefaultPlugins`][bevy::DefaultPlugins] if you are making a full game/app
- - [`MinimalPlugins`][bevy::MinimalPlugins] for something like a headless server.
+Bevy游戏引擎自己的内置功能使用 [plugin 组][cb::plugingroup]表示.
+每个Bevy app都要先添加它,有以下两种:
+ - [`DefaultPlugins`][bevy::DefaultPlugins] 如果是全功能的game/app
+ - [`MinimalPlugins`][bevy::MinimalPlugins] 最小依赖,类似无头服务
 
-## Setting up data
+## 配置数据
 
-Normally, you can set up [your data][cb::ecs-intro-data] from
-[systems][cb::system]. Use [Commands][cb::commands] from regular systems, or
-use [exclusive systems][cb::exclusive] to get [full World access][cb::world].
+通常,你可以通过[systems][cb::system]来配置[数据][cb::ecs-intro-data].
+使用system里的[Commands][cb::commands]或者[独占 systems][cb::exclusive] 来[访问World][cb::world].
 
-Add your setup systems as startup systems for things you want to initialize
-at launch, or use [state][cb::state] enter/exit systems to do things when
-transitioning between menus, game modes, levels, etc.
+使用system设置在启动时需要初始化的东西,或在菜单、游戏模式、级别等之间过渡时执行某些操作，可以使用使用[state][cb::state] 进入/退出 system.
 
-However, you can also initialize data directly from the app builder. This
-is common for [resources][cb::res], if they need to be present at all
-times. You can also get [direct World access][cb::world].
+你也可以直接在构造app时初始化数据.这通常用于[resources][cb::res],无论何时,都可以[直接访问World][cb::world]获取.
 
 ```rust,no_run,noplayground
 {{#include ../code012/src/programming/app_builder.rs:world}}
 ```
 
-## Quitting the App
+## 退出 App
 
-To cleanly shut down bevy, send an [`AppExit`][bevy::AppExit]
-[event][cb::event] from any [system][cb::system]:
+为了优雅退出bevy,使用[system][cb::system] 发送[`AppExit`][bevy::AppExit] [event][cb::event]:
 
 ```rust,no_run,noplayground
 {{#include ../code012/src/programming/app_builder.rs:appexit}}
 ```
 
-For prototyping, Bevy provides a convenient system you can add, to close the
-focused window on pressing the `Esc` key. When all windows are closed, Bevy will
-quit automatically.
+对于原型开发，Bevy 提供了一个方便的system，你可以添加这个system，以便在按下 Esc 键时关闭当前聚焦的窗口。当所有窗口都关闭时，Bevy 将自动退出。
 
 ```rust,no_run,noplayground
 {{#include ../code012/src/programming/app_builder.rs:close_on_esc}}

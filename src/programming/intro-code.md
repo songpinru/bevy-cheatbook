@@ -1,59 +1,40 @@
 {{#include ../include/header012.md}}
 
-# Intro: Your Code
+# 介绍: 代码
 
-This page is an overview, to give you an idea of the big picture of how Bevy
-works. Click on the various links to be taken to dedicated pages where you can
-learn more about each concept.
+这一页是个概览,给你展示下Bevy大体上怎么工作的.点击链接跳转到对应的页面了解详情.
 
 ---
 
-As mentioned in [the ECS Intro][cb::ecs-intro], Bevy manages all of your
-functionality/behaviors for you, running them when appropriate and giving them
-access to whatever parts of [your data][cb::ecs-intro-data] they need.
+如[ECS 介绍][cb::ecs-intro]所述,Bevy 管理所有的功能/行为,适时的运行他们,并给他们相应[数据][cb::ecs-intro-data]的访问权.
 
-Individual pieces of functionality are called [systems][cb::system]. Each system
-is a Rust function (`fn`) you write, which accepts [special parameter
-types][cb::system-param] to indicate what [data][cb::ecs-intro-data] it needs to
-access. Think of the function signature as a "specification" for what to fetch
-from the ECS [`World`][bevy::World].
+独立的功能被称为[systems][cb::system].每个system就是一个Rust的函数(`fn`),入参必须是能表达它所访问[数据][cb::ecs-intro-data]的[特殊参数类型][cb::system-param].
+可以将函数签名视为从ECS [`World`][bevy::World]中提取东西的 "规范".
 
-Here is what a [system][cb::system] might look like. Note how, just by looking
-at the function parameters, we know *exactly* what [data][cb::ecs-intro-data]
-can be accessed.
+下面是一个可能的[system][cb::system].只需要看函数参数,我们就知道需要访问什么[数据][cb::ecs-intro-data].
 
 ```rust,no_run,noplayground
 {{#include ../code012/src/programming/intro_code.rs:example-system}}
 ```
 
-(learn more about: [systems][cb::system], [queries][cb::query], [commands][cb::commands], [resources][cb::res], [entities][cb::entity], [components][cb::component])
+(参考: [systems][cb::system], [queries][cb::query], [commands][cb::commands], [resources][cb::res], [entities][cb::entity], [components][cb::component])
 
-## Parallel Systems
+## 并行 System
 
-Based on the [parameter][cb::system-param] types of the [systems][cb::system]
-you write, Bevy knows what data each system can access and whether it conflicts
-with any other systems.  Systems that do not conflict (don't access any of the
-same data mutably) will be automatically [run in parallel][cb::system-parallel]
-on different CPU threads. This way, you get multithreading, utilizing modern
-multi-core CPU hardware effectively, with no extra effort from you!
+基于你写的[systems][cb::system]的[参数][cb::system-param]类型,Bevy知道每个system访问的数据而不会和其他system冲突.
+不会冲突的system(不会同时修改数据)会自动[并行运行][cb::system-parallel]于不同的CPU线程.
+这样,你可以多线程,无障碍使用现代多核CPU.
 
-For best parallelism performance, it is recommended that you keep your
-functionality and [your data][cb::ecs-intro-data] granular. Create many small
-systems, each one with a narrowly-scoped purpose and accessing only the data it
-needs. This gives Bevy more opportunities for parallelism. Putting too much
-functionality in one system, or too much data in a single
-[component][cb::component] or [resource][cb::res] `struct`, limits parallelism.
+为了最好的并发性能,建议你的功能和[数据][cb::ecs-intro-data]保持较小的粒度.
+创建很多小的system,每个实现单一的目标,访问仅需的数据.这样可以让bevy更容易并行执行.
+在一个system中执行太多的功能或者太多的数据在一个[component][cb::component] 或 [resource][cb::res] 的 `struct`,会限制并行能力.
 
-Bevy's parallelism is non-deterministic by default. Your systems might run in a
-different and unpredictable order relative to one another, unless you add
-[ordering][cb::system-order] dependencies to constrain it.
+Bevy默认是不确定的并行.你的system相对另一个system运行顺序是不可预测的,除非你增加[ordering][cb::system-order]来约束.
 
-## Exclusive Systems
+## 独占 System
 
-[Exclusive][cb::exclusive] systems provide you with a way to get [full direct
-access][cb::world] to the ECS [`World`][cb::World]. They cannot run in parallel
-with other systems, because they can access anything and do anything. Sometimes,
-you might need this additonal power.
+[独占][cb::exclusive] system给了你[完全直接访问][cb::world]ECS [`World`][cb::World] 的方式.
+他们可以与其他system并行运行,因为他们可以访问任何东西做任何事.有时你可能需要这种能力.
 
 ```rust,no_run,noplayground
 {{#include ../code012/src/programming/intro_code.rs:exclusive}}
@@ -61,29 +42,18 @@ you might need this additonal power.
 
 ## Schedules
 
-Bevy stores systems inside of [schedules][cb::schedule]
-([`Schedule`][bevy::Schedule]). The schedule contains the systems and all
-relevant metadata to organize them, telling Bevy when and how to run them. Bevy
-[Apps][cb::App] typically contain many schedules. Each one is a collection of
-systems to be invoked in different scenarios (every frame update, [fixed
-timestep][cb::fixedtimestep] update, at app startup, on [state][cb::state]
-transitions, etc.).
+Bevy把system保存在 [schedules][cb::schedule] ([`Schedule`][bevy::Schedule])里.
+schedule包含了system和组织他们的元数据,告诉bevy何时何地执行. 
+Bevy [Apps][cb::App]通常含有多个schedule,每个都是不同场景(每帧更新,[定时更新][cb::fixedtimestep],app启动,[state][cb::state]变化等)下调用的system的集合
 
-The metadata stored in schedules allows you to control how systems run:
- - Add [run conditions][cb::rc] to control if systems should run during an
-   invocation of the schedule. You can disable systems if you only need them
-   to run sometimes.
- - Add [ordering][cb::system-order] constraints, if one system depends on
-   another system completing before it.
+schedule中保存的元数据可以控制system何时执行:
+ -  [运行条件][cb::rc] 控制system在调度期间是否运行.这样你可以在某些时间禁用某个system
+ -  [顺序][cb::system-order] 约束,如果一个system依赖于另一个system完成.
 
-Within schedules, systems can be grouped into [sets][cb::systemset]. Sets
-allow multiple systems to share common configuration/metadata. Systems
-inherit configuration from all sets they belong to. Sets can also inherit
-configuration from other sets.
+在schedule中,system可以被组合成[set][cb::systemset].set可以让多个system共享相同的元数据/配置.
+system继承他所属的set的配置.set也可以继承其他的set.
 
-Here is an illustration to help you visualize the logical structure of a
-schedule. Let's look at how a hypothetical "Update" (run every frame) schedule of a
-game might be organized.
+这是一个帮你理解schedule的逻辑结构的图.让我们来看看一个假设的“Update”（每帧运行）游戏调度可能会如何组织.
 
 List of [systems][cb::system]:
 
@@ -113,32 +83,21 @@ List of [sets][cb::systemset]:
 |`EnemyAiSet`|`GameplaySet`|`not(cutscene)`|`after(player_movement)`|
 |`AudioSet`||`not(audio_muted)`||
 
-Note that it doesn't matter in what order systems are listed in the schedule.
-Their [order][cb::system-order] of execution is determined by the metadata. Bevy
-will respect those constraints, but otherwise run systems in parallel as much as
-it can, depending on what CPU threads are available.
+请注意，在调度中列出system的顺序并不重要。它们的执行[顺序][cb::system-order]由元数据确定。
+Bevy会尊重这些约束，但除此之外，它会尽可能并行运行系统，具体取决于可用的CPU线程。
 
-Also note how our hypothetical game is implemented using many individually-small
-systems. For example, instead of playing audio inside of the `player_movement`
-system, we made a separate `play_footstep_sounds` system. These two pieces of
-functionality probably need to access different [data][cb::ecs-intro-data], so
-putting them in separate systems allows Bevy more opportunities for parallelism.
-By being separate systems, they can also have different configuration. The
-`play_footstep_sounds` system can be added to an `AudioSet`
-[set][cb::systemset], from which it inherits a `not(audio_muted)` [run
-condition][cb::rc].
+还请注意，我们的假设游戏是使用许多单独的小型system来实现的。例如，我们不是在`player_movement`system中播放音频，
+而是创建了一个单独的`play_footstep_sounds` system。这两个功能可能需要访问不同的[数据][cb::ecs-intro-data]，
+因此将它们放在不同的system中可以让Bevy有更多的并行机会。作为单独的system，它们还可以有不同的配置。
+`play_footstep_sounds` system可以添加到AudioSet[set][cb::systemset]中，从中继承一个`not(audio_muted)`[运行条件][cb::rc]。
 
-Similarly, we put mouse and controller input in separate systems. The `InputSet`
-set allows systems like `player_movement` to share an ordering dependency
-on all of them at once.
+类似地，我们将鼠标和控制器输入放在单独的system中。`InputSet`set允许像`player_movement`这样的system一次性共享对它们的所有排序依赖关系。
 
-You can see how Bevy's scheduling APIs give you a lot of flexibility to organize
-all the functionality in your game. What will you do with all this power? ;)
+你可以看到，Bevy的调度API为你提供了很大的灵活性来组织游戏中的所有功能。你会如何利用这种强大的功能呢？;)
 
 ---
 
-Here is how [schedule][cb::schedule] that was illustrated above could be
-created in code:
+下图解释了[schedule][cb::schedule]在代码中如何创建的:
 
 ```rust,no_run,noplayground
 {{#include ../code012/src/programming/intro_code.rs:example-scheduling}}

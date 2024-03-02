@@ -2,125 +2,99 @@
 
 # Resources
 
-Relevant official examples:
+官方示例:
 [`ecs_guide`][example::ecs_guide].
 
 ---
 
-Resources allow you to store a single global instance of some data type,
-independently of [entities][cb::ec].
+Resource不同于[entity][cb::ec],它可以存储全局唯一的数据.
 
-Use them for [data][cb::ecs-intro-data] that is truly global for your app, such
-as configuration / settings. Resources make it easy for you to access such data
-from anywhere.
+使用Resource包装的[数据][cb::ecs-intro-data] 一定是全局的,例如配置/设置.任何地方Resource都可以很方便的访问.
 
 ---
 
-To create a new resource type, simply define a Rust `struct` or `enum`, and
-derive the [`Resource`][bevy::Resource] trait, similar to
-[components][cb::component] and [events][cb::event].
+要创建一个新的resource类型,简单定义一个Rust`struct` 或 `enum`,然后派生[`Resource`][bevy::Resource] trait,
+类似[components][cb::component] 和 [events][cb::event].
 
 ```rust,no_run,noplayground
 {{#include ../code012/src/programming/res.rs:struct}}
 ```
 
-Types must be unique; there can only be at most one instance of a given type. If
-you might need multiple, consider using [entities and components][cb::ec] instead.
+类型必须时唯一的,每个类型最多只有一个实例.如果你需要多个,考虑[entities and components][cb::ec].
 
-Bevy [uses resources for many things][builtins::res]. You can use these builtin
-resources to access various features of the engine. They work just like your own
-custom types.
+Bevy[很多地方使用了resource][builtins::res].你可以使用这些内置的resource启动引擎的很多特性.它们就像你自己定义的一样.
 
-## Accessing Resources
+## 访问 Resource
 
-To access the value of a resource from [systems][cb::system], use `Res`/`ResMut`:
+[systems][cb::system]中使用`Res`/`ResMut` 访问resource:
 
 ```rust,no_run,noplayground
 {{#include ../code012/src/programming/res.rs:systemparam}}
 ```
 
-## Managing Resources
+## 管理 Resource
 
-If you need to create/remove resources at runtime, you can do so using
-[commands][cb::commands] ([`Commands`][bevy::Commands]):
+如果你需要在运行时创建/移除resource,可以使用[commands][cb::commands] ([`Commands`][bevy::Commands]):
 
 ```rust,no_run,noplayground
 {{#include ../code012/src/programming/res.rs:commands}}
 ```
-
-Alternatively, using [direct World access][cb::world] from an [exclusive
-system][cb::exclusive]:
+另外,还可以从[独占system][cb::exclusive] 中[直接访问World][cb::world]:
 
 ```rust,no_run,noplayground
 {{#include ../code012/src/programming/res.rs:exclusive}}
 ```
 
-Resources can also be set up from the [app builder][cb::app]. Do this for
-resources that are meant to always exist from the start.
+Resource也可以在[app 构建][cb::app]时设置好.这样你的resource从开始就存在.
 
 ```rust,no_run,noplayground
 {{#include ../code012/src/programming/res.rs:app}}
 ```
 
-## Resource Initialization
+## Resource 初始化
 
-Implement [`Default`][std::Default] for simple resources:
+对于简单的resource,实现[`Default`][std::Default]:
 
 ```rust,no_run,noplayground
 {{#include ../code012/src/programming/res.rs:default}}
 ```
 
-For resources that need complex initialization, implement [`FromWorld`][bevy::FromWorld]:
+对于需要复杂初始化的resource, 实现 [`FromWorld`][bevy::FromWorld]:
 
 ```rust,no_run,noplayground
 {{#include ../code012/src/programming/res.rs:fromworld}}
 ```
 
-Beware: it can be easy to get yourself into a mess of unmaintainable code
-if you overuse [`FromWorld`][bevy::FromWorld] to do complex things.
+注意:如果过度使用[`FromWorld`][bevy::FromWorld]很容易陷入不可维护.
 
-## Usage Advice
+## 使用建议
 
-The choice of when to use [entities/components][cb::ec] vs. resources is
-typically about how you want to access the [data][cb::ecs-intro-data]: globally
-from anywhere (resources), or using ECS patterns (entities/components).
+何何时使用[entities/components][cb::ec]、或何时使用resource来存储数据，通常是关于你想如何访问[数据][cb::ecs-intro-data]的问题：
+使用从任何地方全局访问的模式（resources），还是使用 ECS 模式（entities/components）。
 
-Even if there is only one of a certain thing in your game (such as the
-player in a single-player game), it can be a good fit to use an entity
-instead of resources, because entities are composed of multiple components,
-some of which can be common with other entities. This can make your game
-logic more flexible. For example, you could have a "health/damage system"
-that works with both the player and enemies.
+即使在你的游戏中某个对象只有一个（比如单人游戏中的玩家），使用entity而使不是resource也是很合适的，
+因为entity是由多个component组成的，其中一些component可以与其他entity共用。这可以使你的游戏逻辑更加灵活。
+例如，你可以用一个"健康/伤害系统"，对玩家和敌人都有效。
 
-### Settings
+### 设置
 
-One common usage of resources is for storing settings and configuration.
+resource的常用方式时存储设置和配置.
 
-However, if it is something that cannot be changed at runtime and only used when
-initializing a [plugin][cb::plugin], consider putting that inside the plugin's
-`struct`, instead of a resource.
+但是如果有的东西运行时不会改变并且只会在初始化[plugin][cb::plugin]时使用,考虑把他们放在plugin的`struct`,而不是变成resource.
 
-### Caches
+### 缓存
 
-Resources are also useful if you want to store some data in a way that is easier
-or more efficient for you to access. For example, keeping a collection of [asset
-handles][cb::handle], or using a custom datastructure for representing a game
-map more efficiently than using entities and components, etc.
+resource也可以存储一些可能经常使用的数据.例如,[资源处理][cb::handle],使用自定义的数据结构而不是entity和component表示地图,等.
 
-[Entities and Components][cb::ec], as flexible as they are, are not necessarily
-the best fit for all use cases. If you want to represent your data some other
-way, feel free to do so. Simply create a resource and put it there.
+[Entitiy和Component][cb::ec] 尽管非常灵活，但并不一定适合所有用例。
+如果你希望以其他方式表示你的数据，请尽管这样做。只需创建一个资源并将其放在那里即可。
 
-### Interfacing with external libraries
+### 外部库交互
 
-If you want to integrate some external non-Bevy software into a Bevy app,
-it can be very convenient to create a resource to hold onto its state/data.
+如果你想集成一些外部非bevy的软件进Bevy app,创建一个resource来保存它的状态/数据是非常方便的.
 
-For example, if you wanted to use an external physics or audio engine, you
-could put all its data in a resource, and write some systems to call its
-functions. That can give you an easy way to interface with it from Bevy code.
+例如，如果你想要使用外部的物理引擎或音频引擎，你可以将所有的相关数据放在一个resource中，并编写一些system来调用它。
+这样，你就可以很容易地从Bevy代码中与它进行交互。
 
-If the external code is not thread-safe (`!Send` in Rust parlance), which is
-common for non-Rust (e.g C++ and OS-level) libraries, you should use a
-[Non-Send][cb::nonsend] Bevy resource instead. This will make sure any Bevy
-system that touches it will run on the main thread.
+如果外部代码不是线程安全的（在Rust术语中称为`!Send`），这对于非Rust（例如C++和操作系统级别）的库来说是很常见的，
+你应该使用一个[非Send][cb::nonsend]的Bevy resource。这将确保任何接触该resource的Bevy system都会在主线程上运行。

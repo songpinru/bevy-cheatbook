@@ -1,81 +1,70 @@
 {{#include ../include/header012.md}}
 
-Relevant official examples:
+官方示例:
 [`ecs_guide`][example::ecs_guide].
 
 ---
 
 # Entities
 
-[See here for more explanation on how storing data in the ECS works.][cb::ecs-intro-data]
+[ECS World中如何存储数据.][cb::ecs-intro-data]
 
-Conceptually, an entity represents a set of values for different components.
-Each component is a Rust type (`struct` or `enum`) and an entity can be used to
-store a value of that type.
+从概念上来说,一个entity由一组不同的component组成.每个component是Rust中的type(`struct` 或 `enum`),
+entity也可以用type来保存值.
 
-Technically, an entity is just a simple integer ID (imagine the "row number" in
-a table/spreadsheet) that can be used to find related data values (in different
-"columns" of that table).
+技术上,一个entity只是一个简单的ID(想象 表/表格 里的行数),用来寻找相关的数据的值(在表里的不同列).
 
-In Bevy, [`Entity`][bevy::Entity] is this value. It consists of two integers:
-the ID and the "generation" (allowing IDs to be reused, after you despawn old
-entities).
+在bevy, [`Entity`][bevy::Entity] 就是这个值.由两个整数组成:ID 和 "generation"(ID可以被重用,在释放旧的entity后).
 
-You can create ("spawn") new entities and destroy ("despawn") entities using
-[`Commands`][cb::commands] or [exclusive `World` access][cb::world].
+你可以使用[`Commands`][cb::commands] 或者 [exclusive `World` access][cb::world] 生成和销毁entity.
 
 ```rust,no_run,noplayground
 {{#include ../code012/src/programming/ec.rs:spawn-despawn}}
 ```
 
-Many of your entities might need to have the same common components. You can use
-[Bundles][cb::bundle] to make it easier to spawn your entities.
+很多的entity可能都有相同的component.你可以使用[Bundles][cb::bundle]来简化你生成entity.
 
 # Components
 
-Components are the data associated with entities.
+组件是实体关联的数据.
 
-To create a new component type, simply define a Rust `struct` or `enum`, and
-derive the [`Component`][bevy::Component] trait.
+要创建一个新的component类型,只需定义一个 Rust `struct` 或 `enum`，并派生 [`Component`][bevy::Component] trait。
 
 ```rust,no_run,noplayground
 {{#include ../code012/src/programming/ec.rs:component}}
 ```
 
-Types must be unique – an entity can only have one component per Rust type.
+component类型必须是唯一的，Rust 的每种类型中只能对应一个 component。
 
 ## Newtype Components
 
-Use wrapper (newtype) structs to make unique components out of simpler types:
+使用 newtype 模式来包装数据类型，从基本类型中制作出独特的component：
 
 ```rust,no_run,noplayground
 {{#include ../code012/src/programming/ec.rs:component-newtype}}
 ```
 
-## Marker Components
+## 标记 Component
 
-You can use empty structs to help you identify specific entities. These are
-known as "marker components". Useful with [query filters][cb::query-filter].
+可以使用空的struct来标记entity.这被称为 "标记component". [query 过滤][cb::query-filter]时非常有用.
 
 ```rust,no_run,noplayground
 {{#include ../code012/src/programming/ec.rs:component-marker}}
 ```
 
-## Accessing Components
+## 访问 Components
 
-Components can be accessed from [systems][cb::system], using [queries][cb::query].
+[systems][cb::system]中访问Component , 使用 [queries][cb::query].
 
-You can think of the query as the "specification" for the data you want to access.
-It will search for entities that match and give you access to the data.
+你可以认为query是访问数据的 "规范".他会搜索所有符合你要求的entity.
 
 ```rust,no_run,noplayground
 {{#include ../code012/src/programming/ec.rs:query}}
 ```
 
-## Adding/removing Components
+## 增加/删除 Components
 
-You can add/remove components on existing entities, using [`Commands`][cb::commands] or
-[exclusive `World` access][cb::world].
+使用 [`Commands`][cb::commands] 或 [exclusive `World` access][cb::world] 增加/删除entity上的component.
 
 ```rust,no_run,noplayground
 {{#include ../code012/src/programming/ec.rs:insert-remove}}

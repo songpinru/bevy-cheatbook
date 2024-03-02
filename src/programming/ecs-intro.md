@@ -1,37 +1,30 @@
 {{#include ../include/header012.md}}
 
-# ECS Programming Introduction
+# ECS 编程介绍
 
-This page will try to teach you the general ECS mindset/paradigm.
+这页会教你常见的ESC思维/范式.
 
 ---
 
-Relevant official examples:
+相关示例:
 [`ecs_guide`][example::ecs_guide].
 
-Also check out the complete game examples:
+完整的游戏示例:
 [`alien_cake_addict`][example::alien_cake_addict],
 [`breakout`][example::breakout].
 
 ---
+ESC是一个分隔数据和行为的编程范式.Bevy将会为你保存[你的数据][cb::ecs-intro-data]和[你的各个功能][cb::ecs-intro-code].
+代码会在合适的时间运行.你的代码可以在它需要时访问所需数据.
 
-ECS is a programming paradigm that separates data and behavior. Bevy will store
-all of [your data][cb::ecs-intro-data] and manage all of [your individual pieces
-of functionality][cb::ecs-intro-code] for you. The code will run when
-appropriate. Your code can get access to whatever data it needs to do its thing.
+这使得编写具有灵活性和重用性游戏逻辑([Systems][cb::system])容易.例如,你可以实现:
 
-This makes it easy to write game logic ([Systems][cb::system]) in a way that
-is flexible and reusable. For example, you can implement:
+- 健康值和伤害值可以游戏中所有地方以相同方式工作,无论是玩家,NPC,怪物,交通工具
+- 引力和碰撞,任何应该有物理学的东西
+- UI 中所有按钮的动画或声音效果
 
-- health and damage that works the same way for anything in the game,
-  regardless of whether that's the player, an NPC, or a monster, or a vehicle
-- gravity and collisions for anything that should have physics
-- an animation or sound effect for all buttons in your UI
+当然,当你需要特定entity有特有的行为时(比如,玩家移动,只适用于玩家),自然也很容易表达.
 
-Of course, when you need specialized behavior only for specific entities (say,
-player movement, which only applies to the player), that is naturally easy to
-express, too.
+[如何表现你的数据.][cb::ecs-intro-data]
 
-[Read more about how to represent your data.][cb::ecs-intro-data]
-
-[Read more about how to represent your functionality.][cb::ecs-intro-code]
+[如何表现你的功能.][cb::ecs-intro-code]
