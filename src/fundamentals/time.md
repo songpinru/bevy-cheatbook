@@ -2,7 +2,7 @@
 
 # Time and Timers
 
-Relevant official examples:
+官方示例:
 [`timers`][example::timers],
 [`move_sprite`][example::move_sprite].
 

@@ -2,7 +2,7 @@
 
 # Logging, Console Messages
 
-Relevant official examples:
+官方示例:
 [`logs`][example::logs].
 
 ---

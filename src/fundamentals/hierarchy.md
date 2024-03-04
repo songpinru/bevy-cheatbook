@@ -2,7 +2,7 @@
 
 # Hierarchical (Parent/Child) Entities
 
-Relevant official examples:
+官方示例:
 [`hierarchy`][example::hierarchy],
 [`parenting`][example::parenting].
 

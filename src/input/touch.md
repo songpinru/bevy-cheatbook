@@ -2,7 +2,7 @@
 
 # Touchscreen
 
-Relevant official examples:
+官方示例:
 [`touch_input`][example::touch_input],
 [`touch_input_events`][example::touch_input_events].
 

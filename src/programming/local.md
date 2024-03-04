@@ -1,51 +1,38 @@
 {{#include ../include/header09.md}}
 
-# Local Resources
+# 本地资源
 
-Relevant official examples:
+官方示例:
 [`ecs_guide`][example::ecs_guide].
 
 ---
 
-Local resources allow you to have per-[system][cb::system] data. This data
-is not stored in the ECS World, but rather together with your system.
+本地资源允许每个[system][cb::system]有自己的数据.这些数据不存储在ECS World,而是和system一起存储.
 
-[`Local<T>`][bevy::Local] is a system parameter similar to
-[`ResMut<T>`][bevy::ResMut], which gives you full mutable access to an
-instance of some data type, that is independent from entities and components.
+[`Local<T>`][bevy::Local] 是类似于[`ResMut<T>`][bevy::ResMut]的system 参数, 可以访问一些独立于entity 和 component的可变的数据实例.
 
-[`Res<T>`][bevy::Res]/[`ResMut<T>`][bevy::ResMut] refer to a single global
-instance of the type, shared between all systems. On the other hand, every
-[`Local<T>`][bevy::Local] parameter is a separate instance, exclusively for
-that system.
+[`Res<T>`][bevy::Res]/[`ResMut<T>`][bevy::ResMut] 是所有system共享的全局引用.另一方面,每个[`Local<T>`][bevy::Local]都是单独的实例.
 
 ```rust,no_run,noplayground
 {{#include ../code/src/basics.rs:local-resource}}
 ```
 
-The type must implement [`Default`][std::Default] or
-[`FromWorld`][bevy::FromWorld]. It is automatically initialized.
+必须实现 [`Default`][std::Default] 或者 [`FromWorld`][bevy::FromWorld]. 这样会自动初始化.
 
-A system can have multiple [`Local`][bevy::Local]s of the same type.
+一个system可以有多个相同类型的[`Local`][bevy::Local].
 
-## Specify an initial value
+## 指定初始值
 
-[`Local<T>`][bevy::Local] is always automatically initialized using the
-default value for the type.
+[`Local<T>`][bevy::Local] 总是使用默认值初始化.
 
-If you need specific data, you can use a closure instead. Rust closures
-that take system parameters are valid Bevy systems, just like standalone
-functions. Using a closure allows you to "move data into the function".
+如果你想指定值,可以使用闭包.使用system参数的Rust闭包也是有效的Bevy system,就像独立函数一样.可以用闭包 "把数据放进函数".
 
-This example shows how to initialize some data to configure a system,
-without using [`Local<T>`][bevy::Local]:
+下面例子展示如何不用[`Local<T>`][bevy::Local]初始化数据:
 
 ```rust,no_run,noplayground
 {{#include ../code/src/basics.rs:local-config}}
 ```
-
-Another way to accomplish the same thing is to "return" the system
-from "constructor" helper, that creates it:
+另一种方式是 从 "构造器中"中"return" system:
 
 ```rust,no_run,noplayground
 {{#include ../code/src/basics.rs:local-config-return}}

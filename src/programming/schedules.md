@@ -2,51 +2,33 @@
 
 # Stages
 
-All [systems][cb::system] to be run by Bevy are contained in stages. Every
-frame update, Bevy executes each stage, in order. Within each stage, Bevy's
-scheduling algorithm can run many systems in parallel, using multiple CPU
-cores for good performance.
+Bevy会运行所有包含在stage中的[systems][cb::system].每帧更新,Bevy按顺序执行每个stage.
+在每个stage,Bevy的调度算法可以同时运行很多system,使用多核CPU获得更好的性能.
 
-The boundaries between stages are effectively hard synchronization points.
-They ensure that all systems of the previous stage have completed before any
-systems of the next stage begin, and that there is a moment in time when no
-systems are in-progress.
+stage之间的边界实际上是硬性同步点.确保所有上一个stage的system完成,然后才开始下一个stage的system,
+并且有个时刻没有system处于执行中.
 
-This makes it possible/safe to apply [Commands][cb::commands]. Any operations
-performed by systems using [`Commands`][bevy::Commands] are applied at the
-end of that stage.
+这可以使 [Commands][cb::commands]安全应用.任何system通过 [`Commands`][bevy::Commands] 执行的操作都在这个stage结束时应用.
 
 {{#include ../include/builtins.md:stages}}
 
-By default, when you add your systems, they are added to
-[`CoreStage::Update`][bevy::CoreStage]. Startup systems are added to
-[`StartupStage::Startup`][bevy::StartupStage].
+默认情况下,当你添加system时,会进入[`CoreStage::Update`][bevy::CoreStage].
+Startup systems会进入[`StartupStage::Startup`][bevy::StartupStage].
 
-Bevy's internal systems are in the other stages, to ensure they are ordered
-correctly relative to your game logic.
+Bevy的内部system在其他stage,以确保他们被排在相对游戏逻辑正确的顺序.
 
-If you want to add your own systems to any of Bevy's internal stages, you
-need to beware of potential unexpected interactions with Bevy's own internal
-systems. Remember: Bevy's internals are implemented using ordinary systems
-and ECS, just like your own stuff!
+如果你想添加你自己的system进Bevy内部的stage,你需要小心与Bevy内部system的意外交互.
+切记:Bevy 内部是使用普通system 和 ECS实现的，就像你自己的东西一样!
 
-You can add your own additional stages. For example, if we want our debug
-systems to run after our game logic:
+你可以增加自己的stage.比如,如果我希望debug system在游戏逻辑后执行:
 
 ```rust,no_run,noplayground
 {{#include ../code/src/basics.rs:custom-stage}}
 ```
 
-If you need to manage when your systems run, relative to one another, it
-is generally preferable to avoid using stages, and to use [explicit system
-ordering][cb::system-order] instead. Stages limit parallel execution and
-the performance of your game.
+如果你需要管理system相对于另一个system何时运行,一般最好不要使用stage控制,而是使用[明确system顺序][cb::system-order].
+stage限制了游戏的并行能力和性能.
 
-However, stages can make it easier to organize things, when you really want
-to be sure that all previous systems have completed. Stages are also the
-only way to apply [Commands][cb::commands].
+另外,当你真的要确保前一个system已经完成时,stage使事情容易.stage也是应用[Commands][cb::commands]唯一方法.
 
-If you have systems that need to rely on the actions that other systems have
-performed by using [Commands][cb::commands], and need to do so during the
-same frame, placing those systems into separate stages is the only way to
-accomplish that.
+如果你的system依赖其他system中使用[Commands][cb::commands]执行的动作时,并且需要在相同的帧内执行,放在不同的stage是唯一实现方法.

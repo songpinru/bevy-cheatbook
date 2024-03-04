@@ -2,19 +2,16 @@
 
 # Commands
 
-Relevant official examples:
+官方示例:
 [`ecs_guide`][example::ecs_guide].
 
 ---
 
-Use [`Commands`][bevy::Commands] to spawn/despawn entities, add/remove
-components on existing entities, manage resources.
+使用[`Commands`][bevy::Commands]生成/销毁entity,在已存在的entity上添加/删除component,管理resource.
 
-These actions do not take effect immediately; they are queued to be performed
-later when it is safe to do so. See: [stages][cb::stage].
+操作不会立马生效,他们会被放进队列中等之后安全时执行.看[stages][cb::stage].
 
-(if you are not using stages, that means your other [systems][cb::system]
-will see them on the next frame update)
+(如果你不使用stage,意味着你的其他[systems][cb::system]会在下帧更新时看到结果)
 
 ```rust,no_run,noplayground
 {{#include ../code/src/basics.rs:example-commands}}

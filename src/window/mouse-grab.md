@@ -2,7 +2,7 @@
 
 # Grabbing the Mouse
 
-Relevant official examples:
+官方示例:
 [`mouse_grab`][example::mouse_grab].
 
 ---

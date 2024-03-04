@@ -2,7 +2,7 @@
 
 # Keyboard Input
 
-Relevant official examples:
+官方示例:
 [`keyboard_input`][example::keyboard_input],
 [`keyboard_input_events`][example::keyboard_input_events].
 

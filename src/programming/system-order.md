@@ -1,81 +1,60 @@
 {{#include ../include/header09.md}}
 
-# System Order of Execution
+# System 执行顺序
 
-Bevy's scheduling algorithm is designed to deliver maximum performance
-by running as many systems as possible in parallel across the available
-CPU threads.
+Bevy的调度算法是为了发挥最大性能设计的,在可用的CPU线程上尽可能并行最多的system.
 
-This is possible when the systems do not conflict over the data they need
-to access. However, when a system needs to have mutable (exclusive) access
-to a piece of data, other systems that need to access the same data cannot
-be run at the same time. Bevy determines all of this information from the
-system's function signature (the types of the parameters it takes).
+当system之间没有数据冲突时,可能发挥最大性能.但是当一个system需要某个数据的可变(独享)访问权时,其他需要访问这个数据的system不能在同一时刻运行.
+Bevy通过system的函数标签(其参数的类型)来确定这些.
 
-In such situations, the order is *nondeterministic* by default. Bevy takes
-no regard for when each system will run, and the order could even change
-every frame!
+在某些情况下,默认执行顺序是不确定的.Bevy不关心system何时运行,每一帧system的运行顺序都可能不同.
 
-## Does it even matter?
+## 有何影响?
 
-In many cases, you don't need to worry about this.
+许多情况下,你不需要担心.
 
-However, sometimes you need to rely on specific systems to run in a particular
-order. For example:
+但是,有时你需要某些system以特殊的顺序运行.例如:
 
-  - Maybe the logic you wrote in one of your systems needs any modifications
-    done to that data by another system to always happen first?
-  - One system needs to receive [events][cb::event] sent by another system.
-  - You are using [change detection][cb::change-detection].
+  - 可能你写的某个system的数据需要在另一个system先修改完?
+  - 一个system需要接收另一个system发送的[events][cb::event]
+  - 你使用了 [变更检测][cb::change-detection]
 
-In such situations, systems running in the wrong order typically causes
-their behavior to be delayed until the next frame. In rare cases, depending
-on your game logic, it may even result in more serious logic bugs!
+这些情况下,system以错误的顺序运行可能使他们到下一帧才生效.少部分情况下,按照游戏逻辑,可能会造成严重的逻辑bug!
 
-It is up to you to decide if this is important.
+这是否重要取决于你.
 
-With many things in typical games, such as juicy visual effects, it probably
-doesn't matter if they get delayed by a frame. It might not be worthwhile
-to bother with it. If you don't care, leaving the order ambiguous may also
-result in better performance.
+一般游戏中的许多东西,比如果汁的视觉效果,延迟一帧不是什么问题.可能不值得为此担忧.如果你不在乎,随机的顺序可能会获得更好的性能.
 
-On the other hand, for things like handling the player input controls,
-this would result in annoying lag, so you should probably fix it.
+另一方面,比如处理玩家输入这类,可能会导致烦人的延迟,你应该尽可能修复它.
 
-## Explicit System Ordering
+## 明确 System 顺序
 
-If a specific system must always run before or after some other systems,
-you can add ordering constraints:
+如果一个system必须在另一个system之前或之后运行,你可以添加顺序约束:
 
 ```rust,no_run,noplayground
 {{#include ../code/src/basics.rs:system-order}}
 ```
 
-`.before`/`.after` may be used as many times as you need on one system.
+`.before`/`.after` 可能根据需要在一个system上多次使用.
 
-## Labels
+## 标签
 
-For more advanced use cases, you can use [labels][cb::label]. Labels can
-either be strings, or custom types (like `enum`s) that derive `SystemLabel`.
+对于更高级的用例,你可以使用[labels][cb::label].标签可以是字符串,或者派生`SystemLabel`的自定义类型(比如`enum`).
 
-This allows you to affect multiple systems at once, with the same constraints. 
-You can place multiple labels on one system. You can also use the same label
-on multiple systems.
+这样你可以使用一个约束一次性影响多个system.你可以在一个system上打多个标签.你也可以在多个system上使用多个标签.
 
-Each label is a reference point that other systems can be ordered around.
+每个标签都是一个参考点,其他system可以围绕它排序
 
 ```rust,no_run,noplayground
 {{#include ../code/src/basics.rs:system-labels}}
 ```
 
-When you have multiple systems with common labels or ordering, it may be
-convenient to use [system sets][cb::systemset].
+当多个system有相同的标签或者顺序,使用[system sets][cb::systemset]更方便.
 
-## Circular Dependencies
+## 循环依赖
 
+如果有多个彼此互相依赖的system,那么显然是不可能完全解决循环依赖问题.
 If you have multiple systems mutually depending on each other, then it is
 clearly impossible to resolve the situation completely like that.
 
-You should try to redesign your game to avoid such situations, or just accept
-the consequences. You can at least make it behave predictably, using explicit
-ordering to specify the order you prefer.
+你应该重新设计你的游戏以避免这种情况,或者只能接受现实.你可以按照你想要的方式对system显示排序,至少确保最终结果是可预测的.

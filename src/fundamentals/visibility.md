@@ -2,7 +2,7 @@
 
 # Visibility
 
-Relevant official examples:
+官方示例:
 [`parenting`][example::parenting].
 
 ---

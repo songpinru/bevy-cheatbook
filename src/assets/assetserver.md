@@ -2,7 +2,7 @@
 
 # Load Assets from Files with AssetServer
 
-Relevant official examples:
+官方示例:
 [`asset_loading`][example::asset_loading].
 
 ---

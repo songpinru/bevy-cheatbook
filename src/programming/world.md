@@ -1,89 +1,64 @@
 {{#include ../include/header09.md}}
 
-# Direct World Access
+# 直接访问 World
 
-The [`World`][bevy::World] is where Bevy ECS stores all data and
-associated metadata. It keeps track of [resources][cb::res], [entities and
-components][cb::ec].
+[`World`][bevy::World]是Bevy ECS存储数据和相关元数据的地方.跟踪[resource][cb::res], [entity 和 component][cb::ec].
 
-Typically, the [`App`][bevy::App]'s schedule runner will run all
-[stages][cb::stage] (which, in turn, run their [systems][cb::system])
-on the main world. Regular [systems][cb::system] are limited in
-what data they can access from the world, by their [system parameter
-types][builtins::systemparam]. Operations that manipulate the world itself
-are only done indirectly using [`Commands`][cb::commands]. This is how most
-typical Bevy user code behaves.
+通常,[`App`][bevy::App]的调度器会在main World中运行所有的[stage][cb::stage](stage中再运行 [systems][cb::system])
+普通的[systems][cb::system]被[system参数类型][builtins::systemparam]限制了能从World中访问的数据.
+只能通过它自己的`Commands`][cb::commands]操作.这是大多数典型的Bevy用户代码的行为方式.
 
-However, there are also ways you can get full direct access to the world,
-which gives you full control and freedom to do anything with any data stored
-in the Bevy ECS:
+但是,也有多种直接访问World的方式,可以给你完全的控制权和自由操作Bevy ECS中存储的数据:
  - [Exclusive systems][cb::exclusive]
- - [`FromWorld`][bevy::FromWorld] impls
- - Via the [`App`][bevy::App] [builder][cb::app]
- - Manually created [`World`][bevy::World]s for purposes like [tests][cb::system-tests] or scenes
- - Custom Commands
- - Custom [`Stage`][bevy::Stage] impls (not recommended, prefer exclusive systems)
+ - 实现[`FromWorld`][bevy::FromWorld] 
+ -  [`App`][bevy::App] [构造器][cb::app]
+ - 手动创建 [`World`][bevy::World],用于 [tests][cb::system-tests] 或 scenes
+ - 自定义 Commands
+ - 实现自定义 [`Stage`][bevy::Stage]  (不推荐, 首选 exclusive systems)
 
-Direct world access lets you do things like:
- - Freely spawn/despawn entities, insert/remove resources, etc., taking effect immediately
-   (no delay like when using [`Commands`][cb::commands] from a regular [system][cb::system])
- - Access any component, entities, and resources you want
- - Manually run arbitrary systems or stages
+直接访问世界可以做的事情:
+ - 随意生成/销毁 entity, 添加/删除 resource,等. 立即生效(不会像普通[system][cb::system]中的 [`Commands`][cb::commands]一样延迟)
+ - 访问任何component, entities, resources
+ - 手动运行任意 systems 或 stages
 
-This is especially useful if you want to do things that do not fit within
-Bevy's typical execution model/flow of just running systems once every frame
-(organized with [stages][cb::stage] and [labels][cb::system-label]).
+如果你想做一些不适合Bevy典型执行模式/仅每帧运行一次的system(由[stages][cb::stage] 和 [labels][cb::system-label] 组织)时,这相当有用.
 
-With direct world access, you can implement custom control flow, like
-looping some systems multiple times, selecting different systems to run in
-different circumstances, exporting/importing data from files like scenes or
-game saves, …
+通过直接访问World,你可以实现自定义控制流,例如多次循环一些system,从文件导出/导入数据,...
 
-## Working with the `World`
+## 使用 `World`
 
-Here are some ways that you can make use of the direct world access APIs.
+以下是一些可以使用直接World访问 API 的方法.
 
 ### `SystemState`
 
-The easiest way to do things is using a [`SystemState`][bevy::SystemState].
+最简单的方式是 [`SystemState`][bevy::SystemState].
 
-This is a type that "imitates a system", behaving the same way as a
-[system][cb::system] with various parameters would. All the same behaviors
-like [queries][cb::query], [change detection][cb::change-detection], and
-even [`Commands`][cb::commands] are available. You can use any [system
-params][builtins::systemparam].
+这是一种 "模仿system"的类型,使用起来像有多个参数的[system][cb::system].也可以用[queries][cb::query], [变更检测][cb::change-detection], and
+甚至 [`Commands`][cb::commands].可以使用所有[system参数][builtins::systemparam].
 
-It also tracks any persistent state, used for things like [change
-detection][cb::change-detection] or caching to improve performance. Therefore,
-if you plan on reusing the same [`SystemState`][bevy::SystemState] multiple
-times, you should store it somewhere, rather than creating a new one every
-time. Every time you call `.get(world)`, it behaves like another "run"
-of a system.
+他还跟踪任何持久化状态,用于[变更检测][cb::change-detection] 或者 缓存以提高性能.
+因此如果你计划重用同一个[`SystemState`][bevy::SystemState]多次,你应该将其存储在某处,而不是每次创建一个新的.
+每次调用`.get(world)`,就像运行了另一个system.
 
-If you are using [`Commands`][bevy::Commands], you can choose when you
-want to apply them to the world. You need to manually call `.apply(world)`
-on the [`SystemState`][bevy::SystemState], to apply them.
+如果你使用[`Commands`][bevy::Commands],你可以选择何时应用它.
+你需要在[`SystemState`][bevy::SystemState]手动调用`.apply(world)`来应用它.
 
 ```rust,no_run,noplayground
 // TODO: write code example
 ```
 
-### Running a Stage
+### 运行于 Stage
 
-If you want to run some systems (a common use-case is
-[testing][cb::system-tests]), the easiest way is to construct an impromptu
-[`SystemStage`][bevy::SystemStage] ([stages][cb::stage]). This way you reuse
-all the scheduling logic that Bevy normally does when running systems.
+如果你想运行一些system(常见于[testing][cb::system-tests]),最简单的方式是构建一个临时[`SystemStage`][bevy::SystemStage] ([stages][cb::stage]).
+这样你可以重用所有Bevy正常运行system时的调度逻辑.
 
 ```rust,no_run,noplayground
 // TODO: write code example
 ```
 
-### Navigating by Metadata
+### 元数据导航
 
-The world contains a lot of metadata that allows navigating all the data
-efficiently, such as information about all the stored components, entities,
-archeypes.
+world含有很多导航到数据的元数据,比如存储components, entities, archetypes的信息.
 
 ```rust,no_run,noplayground
 // TODO: write code example

@@ -109,7 +109,7 @@
   - [Commands](./programming/commands.md)
   - [Events](./programming/events.md)
   - [本地资源](./programming/local.md)
-  - [独占system](./programming/exclusive.md)
+  - [Exclusive system](./programming/exclusive.md)
   - [直接访问ESC资源](./programming/world.md)
   - [Schedules](./programming/schedules.md)
   - [System执行顺序](./programming/system-order.md)

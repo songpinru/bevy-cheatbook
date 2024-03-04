@@ -1,44 +1,33 @@
 {{#include ../include/header09.md}}
 
-# Run Criteria
+# 运行条件
 
-Run Criteria are a mechanism for controlling if Bevy should run specific
-[systems][cb::system], at runtime. This is how you can make functionality
-that only runs under certain conditions.
+运行条件是Bevy在运行时运行特定[systems][cb::system]的一种控制机制.这样你可以在确定条件下才运行你的功能.
 
-Run Criteria can be applied to individual [systems][cb::system], [system
-sets][cb::systemset], and [stages][cb::stage].
+运行条件可以被用于单个[system][cb::system], [system sets][cb::systemset], 还有 [stages][cb::stage].
 
-Run Criteria are Bevy systems that return a value of type [`enum
-ShouldRun`][bevy::ShouldRun]. They can accept any [system
-parameters][builtins::systemparam], like a normal system.
+运行条件就是一种返回值类型是[`enumShouldRun`][bevy::ShouldRun]的system.可以和正常system一样接收任何 [system 参数][builtins::systemparam].
 
-This example shows how run criteria might be used to implement different
-multiplayer modes:
+
+这个例子显示了如何使用执行条件来实现不同的多人游戏模式:
 
 ```rust,no_run,noplayground
 {{#include ../code/src/basics.rs:run-criteria}}
 ```
 
-## Known Pitfalls
+## 已知陷阱
 
-### Combining Multiple Run Criteria
+### 组合多个运行条件
 
-It is not possible to make a system that is conditional on multiple run
-criteria. Bevy has a `.pipe` method that allows you to "chain" run criteria,
-which could let you modify the output of a run criteria, but this is very
-limiting in practice.
+不可能让一个system取决于多个运行条件.Bevy提供了`.pipe`方法来允许你组成运行条件链,以此来修改运行条件的输出,但是实践非常有限.
 
+考虑使用[`iyes_loopless`][project::iyes_loopless].它可以使用任意数量的运行条件控制你的system,还不会阻止你使用[states][cb::state] 或 [fixed timestep][cb::fixedtimestep].
 Consider using [`iyes_loopless`][project::iyes_loopless]. It allows you to
 use any number of run conditions to control your systems, and does not prevent
 you from using [states][cb::state] or [fixed timestep][cb::fixedtimestep].
 
 ### Events
 
-When receiving [events][cb::event] in systems that don't run every frame,
-you will miss any events that are sent during the frames when the receiving
-systems are not running!
+在不会每帧运行的system中接收[events][cb::event]时,在接收系统不执行的帧中，所有发送的事件都将会错过。
 
-To mitigate this, you could implement a [custom cleanup
-strategy][cb::event-manual], to manually manage the lifetime of the relevant
-event types.
+为了应对这种情况，你可以实现一个[自定义的事件清理策略][cb::event-manual]，以便手动管理相关事件类型的生命周期。

@@ -2,7 +2,7 @@
 
 # System Piping
 
-Relevant official examples:
+官方示例:
 [`system_piping`][example::system_piping].
 
 ---

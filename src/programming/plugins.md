@@ -2,7 +2,7 @@
 
 # Plugins
 
-Relevant official examples:
+官方示例:
 [`plugin`][example::plugin],
 [`plugin_group`][example::plugin_group].
 

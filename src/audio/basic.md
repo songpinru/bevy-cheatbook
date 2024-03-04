@@ -2,7 +2,7 @@
 
 # Playing Sounds
 
-Relevant official examples:
+官方示例:
 [`audio`][example::audio],
 [`audio_control`][example::audio_control].
 

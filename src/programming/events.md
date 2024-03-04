@@ -2,90 +2,60 @@
 
 # Events
 
-Relevant official examples:
+官方示例:
 [`event`][example::event].
 
 ---
 
-Send data between systems! Let your [systems][cb::system] communicate with each other!
+通过event,可以让[systems][cb::system]彼此沟通!
 
-Like [resources][cb::res] or [components][cb::component], events are
-simple Rust `struct`s or `enum`s. When creating a new event type, derive
-the [`Event`][bevy::Event] trait.
+类似于[resources][cb::res] 和 [components][cb::component], event也是Rust `struct`s or `enum`s.只需要创建一个新的类型,派生[`Event`][bevy::Event] trait.
 
-Then, any [system][cb::system] can send (broadcast) values of that type,
-and any system can receive those events.
+然后,所有的[system][cb::system]都可以发送(广播)刚才创建的类型,所有system也可以接收这种event.
 
- - To send events, use an [`EventWriter<T>`][bevy::EventWriter].
- - To receive events, use an [`EventReader<T>`][bevy::EventReader].
+ - 发送events, 使用 [`EventWriter<T>`][bevy::EventWriter].
+ - 接收events, 使用 [`EventReader<T>`][bevy::EventReader].
 
-Every reader tracks the events it has read independently, so you can handle
-the same events from multiple [systems][cb::system].
+每个 reader会独自追踪要读的event,因此可以多个[system][cb::system]处理同一个event.
 
 ```rust,no_run,noplayground
 {{#include ../code011/src/programming/events.rs:events}}
 ```
 
-You need to register your custom event types via the [app builder][cb::app]:
+你需要通过[app构造][cb::app]注册你的event:
 
 ```rust,no_run,noplayground
 {{#include ../code011/src/programming/events.rs:events-appbuilder}}
 ```
 
-## Usage Advice
+## 使用建议
 
-Events should be your go-to data flow tool. As events can be sent from any
-[system][cb::system] and received by multiple systems, they are *extremely*
-versatile.
+event应该是你首选的数据流工具.因为event可以从任何[system][cb::system]发送并被多个system接收,用途广泛.
 
-Events can be a very useful layer of abstraction. They allow you to decouple
-things, so you can separate different functionality and more easily reason
-about which [system][cb::system] is responsible for what.
+event是非常有用的抽象层,帮助你解耦.你可以分离不同的功能块,更容易明确[system][cb::system]的责任范围.
 
-You can imagine how, even in the simple "player level up" example shown above,
-using events would allow us to easily extend our hypothetical game with more
-functionality. If we wanted to display a fancy level-up effect or animation,
-update UI, or anything else, we can just add more systems that read the events
-and do their respective things. If the `player_level_up` system had simply
-checked the player XP and managed the player level directly, without going via
-events, it would be unwieldy for future development of the game.
+你可以想想,一个简单的 "玩家升级" 展示场景,使用event可以让我们轻松扩展我们游戏功能.
+如果我们想要展示一个花哨的升级效果或动画,更新UI,等等,我们可以添加更多读event的system,然后做各自的事情.
+如果`player_level_up` 是一个不用event的简单的检查玩家XP和直接管理玩家等级的system,将是一个笨拙的游戏开发方式.
 
-## How it all works
+## 如何工作
 
-When you register an event type, Bevy will create an [`Events<T>`][bevy::Events]
-[resource][cb::res], which acts as the backing storage for the event queue. Bevy
-also adds an "event maintenance" [system][cb::system] to clear events every
-frame, preventing them from accumulating and using up memory.
+当注册event的类型时,Bevy会创建一个[`Events<T>`][bevy::Events] [resource][cb::res],类似于一个后台存储event的队列.
+Bevy也添加了一个用于每帧清理event的 "event维护" [system][cb::system],防止他们耗尽内存.
 
-The events storage is double-buffered, meaning that events stay for one extra
-frame after the frame when they were sent. This gives your systems a chance to
-read the events on the next frame, if they did not get a chance during the
-current frame.
+event存储是 双缓存,意味着event在发送后的下一帧仍然保留。这为你的system提供了在下一帧读取event的机会，如果它们在当前帧没有得到处理的话。
 
-If you don't like this, [you can have manual control over when events are
-cleared][cb::event-manual] (at the risk of leaking / wasting memory if you
-forget to clear them).
+如果不喜欢这种方式,[你可以手动控制event何时清理][cb::event-manual](如果忘记清理,会内存泄露/浪费)
 
-The [`EventWriter<T>`][bevy::EventWriter] system parameter is just syntax sugar
-for mutably accessing the [`Events<T>`][bevy::Events] [resource][cb::res] to
-add events to the queue. The [`EventReader<T>`][bevy::EventReader] is a little
-more complex: it accesses the events storage immutably, but also stores an
-integer counter to keep track of how many events you have read. This is why it
-also needs the `mut` keyword.
+[`EventWriter<T>`][bevy::EventWriter] system参数只是向队列添加event的语法糖,用来访问可变的[`Events<T>`][bevy::Events] [resource][cb::res].
+[`EventReader<T>`][bevy::EventReader]稍复杂一点:他访问不可变event和一个你已经读取event的整数计数器.这是它需要使用`mut`关键字的原因.
 
-## Possible Pitfalls
+## 可能的陷阱
 
-Beware of frame delay / 1-frame-lag. This can occur if Bevy runs the receiving
-system before the sending system. The receiving system will only get a chance
-to receive the events on the next frame update. If you need to ensure that
-events are handled immediately / during the same frame, you can use [explicit
-system ordering][cb::system-order].
+小心帧延迟/帧滞后.如果bevy接收的system先于发送的system运行是可能会发生.
+此时接收system在下一帧更新前只有一次机会接收event.如果要确保event被立即/同帧处理,可以使用[明确system顺序][cb::system-order].
 
-Beware of lost events if you do not read events every frame, or at least once
-every other frame update. A common situation where this can occur is when
-using a [fixed timestep][cb::fixedtimestep] or [run conditions][cb::rc].
+如果没有每帧或者每两帧帧至少一次读取event,小心丢失event.常见于使用了[fixed timestep][cb::fixedtimestep] 或 [run conditions][cb::rc].
 
-If you want events to persist for longer than two frames, you can [implement a
-custom cleanup/management strategy][cb::event-manual]. However, you can only do
-this for your own event types. There is no solution for Bevy's
-[built-in][builtins::event] types.
+如果你希望event保留时间超过2帧,你可以[实现自定义清理/管理策略][cb::event-manual].
+但是你只可以处理你自己的event类型,不能处理Bevy的内置event类型.

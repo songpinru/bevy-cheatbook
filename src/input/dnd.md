@@ -2,7 +2,7 @@
 
 # Drag-and-Drop (Files)
 
-Relevant official examples:
+官方示例:
 [`drag_and_drop`][example::drag_and_drop].
 
 ---

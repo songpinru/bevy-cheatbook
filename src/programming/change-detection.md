@@ -2,7 +2,7 @@
 
 # Change Detection
 
-Relevant official examples:
+官方示例:
 [`component_change_detection`][example::component_change_detection].
 
 ---
@@ -103,7 +103,7 @@ enough; you need [stages][cb::stage].
 
 # Removal Detection
 
-Relevant official examples:
+官方示例:
 [`removal_detection`][example::removal_detection].
 
 ---

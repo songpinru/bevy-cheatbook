@@ -17,7 +17,7 @@ system是Bevy运行的方法.实际就是Rust的函数.
 如果你在函数中使用了不支持的参数类型,[你会得到一个编译错误!][pitfall::intosystem].
 
 以下是一些可选项:
- - 使用`Res`][bevy::Res]/[`ResMut`][bevy::ResMut]访问[resources][cb::res]
+ - 使用[`Res`][bevy::Res]/[`ResMut`][bevy::ResMut]访问[resources][cb::res]
  - 使用[queries][cb::query] ([`Query`][bevy::Query])访问[entity中的component][cb::component]
  - 使用[Commands][cb::commands] ([`Commands`][bevy::Commands]) 创建/销毁entity,component,resource
  - 使用[`EventWriter`][bevy::EventWriter]/[`EventReader`][bevy::EventReader] 发送/接收 [events][cb::event]

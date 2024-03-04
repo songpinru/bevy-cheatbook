@@ -2,7 +2,7 @@
 
 # Hot-Reloading Assets
 
-Relevant official examples:
+官方示例:
 [`hot_asset_reloading`][example::hot_asset_reloading].
 
 ---

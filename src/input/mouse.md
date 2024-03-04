@@ -2,7 +2,7 @@
 
 # Mouse
 
-Relevant official examples:
+官方示例:
 [`mouse_input`][example::mouse_input],
 [`mouse_input_events`][example::mouse_input_events].
 

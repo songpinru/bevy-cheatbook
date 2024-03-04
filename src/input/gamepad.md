@@ -2,7 +2,7 @@
 
 # Gamepad (Controller, Joystick)
 
-Relevant official examples:
+官方示例:
 [`gamepad_input`][example::gamepad_input],
 [`gamepad_input_events`][example::gamepad_input_events].
 

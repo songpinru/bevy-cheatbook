@@ -2,7 +2,7 @@
 
 # 3D Models and Scenes (GLTF)
 
-Relevant official examples:
+官方示例:
 [`load_gltf`][example::load_gltf],
 [`update_gltf_scene`][example::update_gltf_scene].
 

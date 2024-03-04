@@ -5,7 +5,7 @@
 
 ---
 
-# Entities
+# Entity
 
 [ECS World中如何存储数据.][cb::ecs-intro-data]
 
@@ -24,7 +24,7 @@ entity也可以用type来保存值.
 
 很多的entity可能都有相同的component.你可以使用[Bundles][cb::bundle]来简化你生成entity.
 
-# Components
+# Component
 
 组件是实体关联的数据.
 

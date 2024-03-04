@@ -2,7 +2,7 @@
 
 # Text / Character Input
 
-Relevant official examples:
+官方示例:
 [`char_input_events`][example::char_input_events],
 [`text_input`][example::text_input].
 

@@ -2,7 +2,7 @@
 
 # States
 
-Relevant official examples:
+官方示例:
 [`state`][example::state].
 
 ---

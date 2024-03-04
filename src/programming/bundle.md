@@ -1,75 +1,65 @@
 {{#include ../include/header012.md}}
 
-Relevant official examples:
+官方示例:
 [`ecs_guide`][example::ecs_guide].
 
 ---
 
 # Bundles
 
-You can think of Bundles like "templates" or "blueprints" for creating entities.
-They make it easy to create [entities][cb::entity] with a common set of
-[components][cb::component].
+Bundle 就像创建entity时的"模板"或者 "蓝图".使创建具有相同[components][cb::component]的[entities][cb::entity]变得容易。
 
-By creating a bundle type, instead of adding your components one by one, you
-can make sure that you will never accidentally forget some important component
-on your entities. The Rust compiler will give an error if you do not set all
-the fields of a struct, thus helping you make sure your code is correct.
+使用Bundle,而不是一个一个的添加component,你可以确保你的entity不会遗失某些重要的component.
+如果struct的字段不完整Rust编译器会报错,帮助你确保你的代码正确.
 
-Bevy provides many [built-in bundle types][builtins::bundle] that you can use
-to spawn common kinds of entities.
+Bevy提供了许多[内置bundle][builtins::bundle] ,可以用来生成常见的entity.
 
-Here is how to create your own bundle:
+如何创建 bundle:
 
 ```rust,no_run,noplayground
 {{#include ../code012/src/programming/bundle.rs:bundle}}
 ```
 
-You can then use your bundle when you spawn your entities:
+然后你可以在生成entity是使用bundle:
 
 ```rust,no_run,noplayground
 {{#include ../code012/src/programming/bundle.rs:bundle-spawn}}
 ```
 
-If you want to have default values (similar to Bevy's bundles):
+如果你想有默认值 :
 
 ```rust,no_run,noplayground
 {{#include ../code012/src/programming/bundle.rs:bundle-default}}
 ```
 
-Now you can do this:
+然后:
 
 ```rust,no_run,noplayground
 {{#include ../code012/src/programming/bundle.rs:bundle-spawn-default}}
 ```
 
-## Loose components as bundles
+## 松散的component变成bundle
 
-Technically, Bevy also considers arbitrary tuples of components as bundles:
+技术上讲,Bevy可以把component元组视为bundle:
 
 ```
 (ComponentA, ComponentB, ComponentC)
 ```
 
-This allows you to easily spawn an entity using a loose bunch of components (or
-bundles), or add more arbitrary components when you spawn entities. However,
-this way you don't have the compile-time correctness advantages that a
-well-defined `struct` gives you.
+这允许你方便的使用多个component(或bundle)生成一个entity,或者在生成entity时添加更多任意component.
+但是,这样会失去编译时的正确性优势,相比于`struct`.
 
 ```rust,no_run,noplayground
 {{#include ../code012/src/programming/bundle.rs:bundle-spawn-loose}}
 ```
 
-You should strongly consider creating proper `struct`s, especially if you are
-likely to spawn many similar entities. It will make your code easier to maintain.
+你应该更倾向于创建合适的`struct`,尤其是生成很多相似的entity时.这会是你的代码更容易维护.
 
 ## Querying
 
-Note that you cannot [query][cb::query] for a whole bundle. Bundles are just a
-convenience when creating the entities. Query for the individual component types
-that your [system][cb::system] needs to access.
+注意:你不能为一个bundle使用[query][cb::query].bundle只是为了方便创建entity. [system][cb::system]中query需要具体的component类型.
 
-This is *wrong*:
+*错误示范*:
 
 ```rust,no_run,noplayground
 fn my_system(query: Query<&SpriteBundle>) {
@@ -77,7 +67,7 @@ fn my_system(query: Query<&SpriteBundle>) {
 }
 ```
 
-Instead, do this:
+正确示范:
 
 ```rust,no_run,noplayground
 fn my_system(query: Query<(&Transform, &Handle<Image>)>) {
@@ -85,5 +75,5 @@ fn my_system(query: Query<(&Transform, &Handle<Image>)>) {
 }
 ```
 
-(or whatever specific components you need in that system)
+(或者任何你所需的特定component)
 

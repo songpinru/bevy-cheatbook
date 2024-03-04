@@ -2,9 +2,8 @@
 
 # System Sets
 
-System Sets allow you to easily apply common properties to multiple systems,
-for purposes such as [labeling][cb::label], [ordering][cb::system-order],
-[run criteria][cb::runcriteria], and [states][cb::state].
+System Sets 允许你轻松地将共同的属性应用于多个系统,以用于如: [label][cb::label], [order][cb::system-order],
+[运行条件][cb::runcriteria], 还有 [state][cb::state]
 
 ```rust,no_run,noplayground
 {{#include ../code/src/basics.rs:systemset-labels}}

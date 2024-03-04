@@ -2,7 +2,7 @@
 
 # Changing the Background Color
 
-Relevant official examples:
+官方示例:
 [`clear_color`][example::clear_color].
 
 ---
