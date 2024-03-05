@@ -1,48 +1,35 @@
 {{#include ../include/header09.md}}
 
-# System Piping
+# System 链
 
 官方示例:
 [`system_piping`][example::system_piping].
 
 ---
 
-You can compose a single Bevy [system][cb::system] from multiple Rust functions.
+你可以把多个Rust函数组合成一个Bevy [system][cb::system].
 
-You can make functions that can take an input and produce an output, and be
-connected together to run as a single larger system. This is called "system piping".
+你可以把一堆有输入和输出的函数链接到一起,变成一个大的system.这被称为 "system链".
 
-You can think of it as creating "modular" systems made up of multiple building
-blocks. This way, you can reuse some common code/logic in multiple systems.
+你可以认为是创造了一个由多个块组成的 system "模块".这样,你就能在多个system中重用一些通用的 代码/逻辑. 
 
-Note that system piping is *not* a way of communicating between systems.
-If you want to pass data between systems, you should use [Events][cb::event]
-instead.
+注意system链不是一种system间的交流方式. 如果你想在system间传递数据, 你应该使用[Event][cb::event].
 
-## Example: Handling [`Result`][std::Result]s
+## 例子: 处理 [`Result`][std::Result]s
 
-One useful application of system piping is to be able to return errors (allowing
-the use of Rust's `?` operator) and then have a separate function for handling
-them:
+system链的一个用处是返回错误(可以使用Rust的`?`操作符),然后由一个单独的函数处理错误:
 
 ```rust,no_run,noplayground
 {{#include ../code/src/basics.rs:system-io}}
 ```
-
-Such functions cannot be [registered][cb::app] individually as systems (Bevy
-doesn't know what to do with the input/output). By "piping" them together, we
-create a valid system that we can add:
+这些函数不能被单独[注册][cb::app]成system(Bevy不知道如何处理输入/输出).通过把他们"链"在一起,我们创建了一个合理的system: 
 
 ```rust,no_run,noplayground
 {{#include ../code/src/basics.rs:system-pipe}}
 ```
 
-## Performance Warning
+## 性能警告
 
-Beware that Bevy treats the whole chain as if it was a single big system, with
-all the combined system parameters and their respective data access
-requirements. This implies that parallelism could be limited, affecting
-performance.
+小心:Bevy对待整个system链就像是一个大的system,具有所有的system参数和数据访问要求.这导致并行化会被限制,影响性能.
 
-If you create multiple "piped systems" that all contain a common function which
-contains any mutable access, that prevents all of them from running in parallel!
+如果你创建了多个 "system链",他们都有一个包含可变访问的公共函数,那么这会阻止所有system并行执行!

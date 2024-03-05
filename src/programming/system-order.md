@@ -15,9 +15,9 @@ Bevy通过system的函数标签(其参数的类型)来确定这些.
 
 但是,有时你需要某些system以特殊的顺序运行.例如:
 
-  - 可能你写的某个system的数据需要在另一个system先修改完?
-  - 一个system需要接收另一个system发送的[events][cb::event]
-  - 你使用了 [变更检测][cb::change-detection]
+- 可能你写的某个system的数据需要在另一个system先修改完?
+- 一个system需要接收另一个system发送的[events][cb::event]
+- 你使用了 [变更检测][cb::change-detection]
 
 这些情况下,system以错误的顺序运行可能使他们到下一帧才生效.少部分情况下,按照游戏逻辑,可能会造成严重的逻辑bug!
 

@@ -2,29 +2,23 @@
 
 # Param Sets
 
-For safety reasons, a [system][cb::system] cannot have multiple parameters
-whose data access might have a chance of mutability conflicts over the
-same data.
+出于安全原因,一个[system][cb::system]不能有多个可能会造成冲突的数据访问的参数.
 
-Some examples:
- - Multiple incompatible [queries][cb::query].
- - Using [`&World`][bevy::World] while also having other system parameters to access specific data.
+例子:
+ - 多个不兼容的 [queries][cb::query].
+ - 使用了[`&World`][bevy::World]的同时还有其他system参数访问指定的数据.
  - …
 
-Consider this example [system][cb::system]:
+思考下这个[system][cb::system]:
 
 ```rust,no_run,noplayground
 {{#include ../code012/src/programming/paramset.rs:conflict}}
 ```
 
-The two [queries][cb::query] are both trying to mutably access `Health`. They
-have different [filters][cb::query-filter], but what if there are entities that
-have both `Player` and `Enemy` components? If we know that shouldn't happen, we
-can add `Without` filters, but what if it is actually valid for our game?
+两个[query][cb::query]都试着可变访问`Health`.他们有不同的[过滤器][cb::query-filter],
+但是如果有实体含有`Player` 和 `Enemy` component会发生什么?如果我们知道不会发生,我们可以再加上`Without`过滤器,但是如果可能发生呢?
 
-Such code will compile (Rust cannot know about Bevy ECS semantics), but will
-result in a runtime panic. When Bevy tries to run the system, it will panic with
-a message about conflicting system parameters:
+这样的代码能通过编译(Rust不知道Bevy的ECS语义),但是在运行时会panic.当Bevy尝试运行这个system,它会panic并附带一个system参数冲突的消息:
 
 ```
 thread 'main' panicked at bevy_ecs/src/system/system_param.rs:225:5:
@@ -34,13 +28,12 @@ with a previous system parameter. Consider using `Without<T>` to create disjoint
 or merging conflicting Queries into a `ParamSet`.
 ```
 
-Bevy provides a solution: wrap any incompatible parameters in a [`ParamSet`][bevy::ParamSet]:
+Bevy 提供了一个解决方案: 用 [`ParamSet`][bevy::ParamSet] 包装不兼容的参数:
 
 ```rust,no_run,noplayground
 {{#include ../code012/src/programming/paramset.rs:paramset}}
 ```
 
-This ensures only one of the conflicting parameters can be used at the same time.
-Bevy will now happily run our system.
+这样确保了同时只能有一个会冲突的参数被使用.Bevy现在可以愉快的工作了.
 
-The maximum number of parameters in a param set is 8.
+param set最大容纳8个参数.

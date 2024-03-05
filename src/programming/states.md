@@ -7,134 +7,107 @@
 
 ---
 
-States allow you to structure the runtime "flow" of your app.
+State允许你构造app运行时的 "流程".
 
-This is how you can implement things like:
- - A menu screen or a loading screen
- - Pausing / unpausing the game
- - Different game modes
- - …
+你可以通过state实现的事情:
 
-In every state, you can have different [systems][cb::system] running. You
-can also add one-shot setup and cleanup systems to run when entering or
-exiting a state.
+- 一个菜单页或一个加载页
+- 暂停或继续游戏
+- 不同游戏模式
+- …
 
-To use states, define an enum type and add [system sets][cb::systemset]
-to your [app builder][cb::app]:
+在每个state下, 你可以有不同的 [systems][cb::system] 被执行. 你也可以在进入或者退出state时添加一次性的设置或用于打扫的system.
+
+要使用state，请定义一个enum类型, 并在你的[app构造器][cb::app]中添加[system sets][cb::systemset]:
 
 ```rust,no_run,noplayground
 {{#include ../code/src/basics.rs:app-states}}
 ```
 
-It is OK to have multiple system sets for the same state.
+同一个state可以有多个system set.
 
-This is useful when you want to place [labels][cb::label] and use [explicit
-system ordering][cb::system-order].
+当你想使用[labels][cb::label] 和 [明确system顺序][cb::system-order]时, 这很有用.
 
-This can also be useful with [Plugins][cb::plugin]. Each plugin can add
-its own set of systems to the same state.
+这对[Plugins][cb::plugin]也有用.每个plugin都可以为同一个state添加自己的system set.
 
-States are implemented using [run criteria][cb::runcriteria] under the hood.
-These special system set constructors are really just helpers to automatically
-add the state management run criteria.
+state底层是通过[运行条件][cb::runcriteria]实现的.这些特殊的system set构造函数实际上只是为自动添加state和管理执行条件的辅助工具。
 
-## Controlling States
+## 控制 State
 
-Inside of systems, you can check and control the state using the
-[`State<T>`][bevy::State] resource:
+在system内, 你可以通过[`State<T>`][bevy::State] resource 查看或控制state:
 
 ```rust,no_run,noplayground
 {{#include ../code/src/basics.rs:check-state}}
 ```
 
-To change to another state:
+要修改另一个state:
 
 ```rust,no_run,noplayground
 {{#include ../code/src/basics.rs:change-state}}
 ```
 
-After the systems of the current state complete, Bevy will transition to
-the next state you set.
+负责当前state的system执行完后, Bevy会转换到你设定的下一个state.
 
-You can do arbitrarily many state transitions in a single frame update. Bevy
-will handle all of them and execute all the relevant systems (before moving
-on to the next [stage][cb::stage]).
+你可以在一帧更新中做任意数量的state转换.Bevy会处理他们的转换并执行所有相关的system(在进入下一个[stage][cb::stage]之前).
 
-## State Stack
+## State 栈
 
-Instead of completely transitioning from one state to another, you can also
-overlay states, forming a stack.
+你不需要完全从一个state转换到另一个state，你也可以进行叠加state，形成一个state堆栈。.
 
-This is how you can implement things like a "game paused" screen, or an
-overlay menu, with the game world still visible / running in the background.
+这样你就可以实现诸如"游戏暂停"场景、或一个菜单叠加场景的同时，而游戏世界仍然可见或在后台运行。
 
-You can have some systems that are still running even when the state is
-"inactive" (that is, in the background, with other states running on top). You
-can also add one-shot systems to run when "pausing" or "resuming" the state.
+你可以有一些system，即使在所属state"未激活"时仍然在运行（也就是该state在后台，其他state在它上面运行）。你也可以在"暂停"或"
+恢复"state时来添加并运行一次性system。
 
-In your [app builder][cb::app]:
+在[app 构造时][cb::app]:
 
 ```rust,no_run,noplayground
 {{#include ../code/src/basics.rs:state-stack}}
 ```
 
-To manage states like this, use `push`/`pop`:
+使用 `push`/`pop` 来管理state:
 
 ```rust,no_run,noplayground
 {{#include ../code/src/basics.rs:state-push-pop}}
 ```
 
-(using `.set` as shown before replaces the active state at the top of the stack)
+(如前面讲的,使用 `.set` 来替换堆栈顶部的活动state)
 
-## Known Pitfalls and Limitations
+## 已知的陷阱和限制
 
-### Combining with Other Run Criteria
+### 结合其他运行条件
 
-Because states are implemented using [run criteria][cb::runcriteria],
-they cannot be combined with other uses of run criteria, such as [fixed
-timestep][cb::fixedtimestep].
+由于state是使用[运行条件][cb::runcriteria]实现的, 所以不能结合其他运行条件使用, 比如[fixed timestep][cb::fixedtimestep].
 
-If you try to add another run criteria to your system set, it would replace
-Bevy's state-management run criteria! This would make the system set no
-longer constrained to run as part of a state!
+如果你尝试添加其他运行条件进system set, 会替换Bevy的state管理运行条件!这将使system set不再受state约束!
 
-Consider using [`iyes_loopless`][project::iyes_loopless], which does not
-have such limitations.
+考虑使用 [`iyes_loopless`][project::iyes_loopless], 这个没有这些限制.
 
-### Multiple Stages
+### 多个 Stages
 
-Bevy states cannot work across multiple [stages][cb::stage]. Workarounds
-are available, but they are broken and buggy.
+Bevy state不能在多个 [stages][cb::stage] 间交叉工作.有可用替代方案，但它们存在故障和缺陷。
 
-This is a huge limitation in practice, as it greatly limits how you can use
-[commands][cb::commands]. Not being able to use Commands is a big deal,
-as you cannot do things like spawn entities and operate on them during the
-same frame, among other important use cases.
+这在实践中这是一个大限制, 限制了你使用[commands][cb::commands].
+不能使用Command是个大麻烦,因为你不能在同一帧生成和操作entity, 等等.
 
-Consider using [`iyes_loopless`][project::iyes_loopless], which does not
-have such limitations.
+考虑使用 [`iyes_loopless`][project::iyes_loopless], 这个没有这些限制.
 
-### With Input
+### 输入
 
-If you want to use [`Input<T>`][bevy::Input] to trigger state transitions using
-a button/key press, you need to clear the input manually by calling `.reset`:
+如果你想使用 按钮/键盘 这种 [`Input<T>`][bevy::Input]触发state转换, 你需要使用`.reset`方法手动清理输入:
 
 ```rust,no_run,noplayground
 {{#include ../code/src/basics.rs:state-input-clear}}
 ```
 
-(note that this requires [`ResMut`][bevy::ResMut])
+(注意需要 [`ResMut`][bevy::ResMut])
 
-Not doing this can cause [issues][bevy::1700].
+不这么做会造成[issues][bevy::1700].
 
-[`iyes_loopless`][project::iyes_loopless] does not have this issue.
+[`iyes_loopless`][project::iyes_loopless] 没有这个问题.
 
 ### Events
 
-When receiving [events][cb::event] in systems that don't run all the time, such
-as during a pause state, you will miss any events that are sent during the frames
-when the receiving systems are not running!
+在不能一直运行的system中接受[events][cb::event], 例如在暂停state, 你会丢失所有接受system没有运行时的event!
 
-To mitigate this, you could implement a [custom cleanup
-strategy][cb::event-manual], to manually manage the lifetime of the relevant
-event types.
+为了减轻这种情况, 你可以实现[自定义清理策略][cb::event-manual], 来管理相关event类型的生命周期.

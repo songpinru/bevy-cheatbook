@@ -8,71 +8,53 @@
 
 ---
 
-As your project grows, it can be useful to make it more modular. You can
-split it into "plugins".
+随着你的项目发展, 模块化是非常有用的. 你可以把他们分成 "plugin".
 
-Plugins are simply collections of things to be added to the [App
-Builder][cb::app]. Think of this as a way to add things to the app from
-multiple places, like different Rust files/modules or crates.
+Plugin是可以加入[App构造器][cb::app] 中的东西的集合.这样可以从多个地方给app添加东西,比如不同的Rust 文件/模块 或者 crate.
 
 ```rust,no_run,noplayground
 {{#include ../code/src/basics.rs:plugins}}
 ```
 
-Note how you get `&mut` access to the [`App`][bevy::App], so you can
-add whatever you want to it, just like you can do from your `fn main`.
+注意使用`&mut`来访问[`App`][bevy::App],这样你可以做任何事情,就像`fn main`一样.
 
-For internal organization in your own project, the main value of plugins
-comes from not having to declare all your Rust types and functions as
-`pub`, just so they can be accessible from `fn main` to be added to the
-app builder. Plugins let you add things to your [app][cb::app] from multiple
-different places, like separate Rust files / modules.
+对于你自己的项目结构,plugin的主要价值是你不必把所有Rust类型和函数声明成`pub`, 只是为了被`fn main`访问并加入到app构造器.
+Plugin让你可以从多个地方给app添加东西,比如不同的Rust 文件/模块.
 
-You can decide how plugins fit into the architecture of your game.
+你可以决定plugin如何融入你的游戏.
 
-Some suggestions:
- - Create plugins for different [states][cb::state].
- - Create plugins for various sub-systems, like physics or input handling.
+一些建议:
+ - 为不同的 [states][cb::state] 创建plugin.
+ - 为不同的子系统创建plugin, 比如 物理系统或者输入处理. 
 
-## Plugin groups
+## Plugin 组
 
-Plugin groups register multiple plugins at once.
-Bevy's [`DefaultPlugins`][bevy::DefaultPlugins] and
-[`MinimalPlugins`][bevy::MinimalPlugins] are examples of this.
-To create your own plugin group:
+plugin组可以一次性注册多个plugin. Bevy的 [`DefaultPlugins`][bevy::DefaultPlugins]和[`MinimalPlugins`][bevy::MinimalPlugins]就是例子.
+这样创建你自己的plugin组:
 
 ```rust,no_run,noplayground
 {{#include ../code/src/basics.rs:plugin-groups}}
 ```
 
-When adding a plugin group to the [app][cb::app], you can disable some
-plugins while keeping the rest.
+给[app][cb::app]插入plugin时,你可以禁用一部分插件.
 
-For example, if you want to manually set up logging (with your own `tracing`
-subscriber), you can disable Bevy's [`LogPlugin`][bevy::LogPlugin]:
+例如,如果你想手动设置日志(使用你自己的`tracing`订阅者), 你可以禁用bevy的[`LogPlugin`][bevy::LogPlugin]:
 
 ```rust,no_run,noplayground
 {{#include ../code/src/basics.rs:plugin-groups-disable}}
 ```
+请注意，这只是简单地禁用了功能，但它不是真正删除代码以避免应用程序的二进制文件的膨胀。被禁用的插件仍然会被编译进你的程序中。
 
-Note that this simply disables the functionality, but it cannot actually
-remove the code to avoid binary bloat. The disabled plugins still have to
-be compiled into your program.
+如果你想给你的编译产物瘦身，你应该禁用 Bevy 的默认[cargo features][cb::features]，或者单独使用 Bevy 的各种子库。
 
-If you want to slim down your build, you should look at disabling Bevy's
-default [cargo features][cb::features], or depending on the various Bevy
-sub-crates individually.
+## Plugin 配置
 
-## Plugin Configuration
-
-Plugins are also a convenient place to store settings/configuration that are
-used during initialization/startup. For settings that can be changed at runtime,
-it is recommended that you put them in [resources][cb::res] instead.
+Plugin也是个 存储初始化/启动 期间 设置/配置 的好方法. 对于那些运行时可能变化的设置,推荐放进[resource][cb::res].
 
 ```rust,no_run,noplayground
 {{#include ../code/src/basics.rs:plugin-config}}
 ```
-
+使用[Plugin 组][cb::plugingroup]添加的plugin也可以被配置.bevy [`DefaultPlugins`][bevy::DefaultPlugins]中很多就是这样工作的.
 Plugins that are added using [Plugin Groups][cb::plugingroup] can also be
 configured. Many of Bevy's [`DefaultPlugins`][bevy::DefaultPlugins] work
 this way.
@@ -81,17 +63,13 @@ this way.
 {{#include ../code/src/basics.rs:defaultplugins-config}}
 ```
 
-## Publishing Crates
+## 发布 Crate
 
-Plugins give you a nice way to publish Bevy-based libraries for other people
-to easily include into their projects.
+Plugin给你了一个很好的途径来发布基于bevy的库,让其他人可以轻松集成进他们的项目.
 
-If you intend to publish plugins as crates for public use, you should read
-[the official guidelines for plugin authors][bevy::plugins_guidelines].
+如果你想把plugin发布成公共crate,你需要了解[插件作者指南][bevy::plugins_guidelines].
 
-Don't forget to submit an entry to [Bevy Assets][bevyassets] on the official
-website, so that people can find your plugin more easily. You can do this
-by making a PR in [the Github repo][project::bevyassets].
+别忘了在官网上提交进入 [Bevy Assets][bevyassets]的申请, 这样大家可以更容易地找到你的插件.
+在[Github 仓库][project::bevyassets]提交一个PR就行.
 
-If you are interested in supporting bleeding-edge Bevy (main), [see here
-for advice][cb::git-plugins].
+如果你有兴趣支持前沿Bevy(main), [看这里][cb::git-plugins].
