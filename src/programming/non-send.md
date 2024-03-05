@@ -13,7 +13,7 @@
 ## Non-Send System 和数据访问
 
 你可以使用[`NonSend<T>`][bevy::NonSend] /[`NonSendMut<T>`][bevy::NonSendMut] system 参数.
-就像使用[`Res<T>`][bevy::Res] / [`ResMut<T>`][bevy::ResMut], 让你可以访问ECS [resource][cb::res] (一个包含数据的全局实例),
+就像使用[`Res<T>`][bevy::Res] / [`ResMut<T>`][bevy::ResMut], 让你可以访问ECS的 [resource][cb::res] (一个包含数据的全局实例),
 这类参数会强制Bevy scheduler只会在主线程上执行这个[system][cb::system].
 这确保了数据不会在线程间传递或者从不同线程访问.
 

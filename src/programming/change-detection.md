@@ -15,7 +15,7 @@ Bevy允许你轻松的检测数据何时变化. 这样你可以执行一些操�
 
 ### 过滤
 
-你可以弄一个[query][cb::query],查指定[component][cb::component]被修改实体.
+你可以弄一个[query][cb::query],查询指定[component][cb::component]被修改了的实体.
 
 使用[query 过滤器][cb::query-filter]:
  - [`Added<T>`][bevy::Added]: 检测新component实例
