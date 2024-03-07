@@ -1,15 +1,14 @@
 {{#include ../include/header-none.md}}
 
-# Performance
+# 性能
 
-## Unoptimized debug builds
+## 未经优化的调试编译
 
-You can partially enable compiler optimizations in debug/dev mode!
+你可以在 debug 和 dev 模式下启用编译器的优化功能!
 
-You can enable higher optimizations for dependencies (incl. Bevy), but not
-your own code, to keep recompilations fast!
+你可以对依赖启用更高的优化(包括Bevy),但不要包括你的代码,以保证编译速度!
 
-In `Cargo.toml` or `.cargo/config.toml`:
+在 `Cargo.toml` 或 `.cargo/config.toml`:
 
 ```toml
 # Enable max optimizations for dependencies, but not for our code:
@@ -17,12 +16,10 @@ In `Cargo.toml` or `.cargo/config.toml`:
 opt-level = 3
 ```
 
-The above is enough to make Bevy run fast. It will only slow down clean
-builds, without affecting recompilation times for your project.
+这足以使Bevy快速运行.只会在清理了构建后慢一点,不会影响重新编译时间.
 
-If your own code does CPU-intensive work, you might want to also enable some
-optimization for it. However, this might greatly affect compile times in some
-projects (similar to a full release build), so it is not generally recommended.
+如果你自己的代码包含CPU密集部分,你可能还需要启用针对CPU的优化.
+但是,这样可能会极大的影响某些项目的编译速度(相当于完整的发布构建),因此通常不建议这么做.
 
 ```toml
 # Enable only a small amount of optimization in debug mode
@@ -30,49 +27,33 @@ projects (similar to a full release build), so it is not generally recommended.
 opt-level = 1
 ```
 
-**Warning!** If you are using a debugger (like `gdb` or `lldb`) to step through
-your code, any amount of compiler optimization can mess with the experience.
-Your breakpoints might be skipped, and the code flow might jump around in
-unexpected ways. If you want to debug / step through your code, you might want
-`opt-level = 0`.
+**警告!** 如果你使用调试器(比如 `gdb` 或 `lldb`) 逐步调试你的代码, 所有的优化都可能扰乱调试.
+断点可能会被跳过,代码可能会跳到意想不到的地方.如果你想逐步调试你的代码,你可能需要设置`opt-level = 0`.
 
-### Why is this necessary?
+### 为什么这是必要的?
 
-Rust without compiler optimizations is *very slow*. With Bevy in
-particular, the default cargo build debug settings will lead to *awful* runtime
-performance. Assets are slow to load and FPS is low.
+没有编译优化的Rust是非常慢的. 特别是使用Bevy时,默认的cargo构建设置会导致糟糕的运行时性能. 资源加载会很慢, FPS也会很低.
 
-Common symptoms:
-  - Loading high-res 3D models with a lot of large textures, from GLTF
-    files, can take minutes! This can trick you into thinking
-    that your code is not working, because you will not see anything on
-    the screen until it is ready.
-  - After spawning even a few 2D sprites or 3D models, framerate may drop
-    to unplayable levels.
+常见现象:
+  - 从GLTF文件加载有大量纹理的高分辨率3D模型时,可能会用好几分钟!
+    这可能会误导你认为自己的代码没有起作用,因为在加载完成前你不会在屏幕上看到任何东西.
+  - 生成一些2D精灵或者3D模型后,帧率下降到没法玩的程度.
 
-### Why not use `--release`?
+### 为什么不用 `--release`?
 
-You may have heard the advice: just run with `--release`! However, this is
-bad advice. Don't do it.
+你可能听到过这个建议: 只用`--release` 运行! 然而这是个坏主意. 别这么做.
 
-Release mode also disables "debug assertions": extra checks useful during
-development. Many libraries also include additional stuff under that
-setting. In Bevy and WGPU that includes validation for shaders and GPU API
-usage. Release mode disables these checks, causing less-informative crashes,
-issues with hot-reloading, or potentially buggy/invalid logic going unnoticed.
+Release模式禁用 "调试断言" : 开发阶段的额外检查. 很多库在这个模式下还有其他东西. 
+在Bevy和WGPU中就有对着色器和GPU API用法的校验.Release模式禁用了这些检查,会导致少信息的崩溃, 热重载出问题, 或者没发现潜在的 错误/无效 逻辑.
 
-Release mode also makes incremental recompilation slow. That negates
-Bevy's fast compile times, and can be very annoying while you develop.
+Release模式也导致增量编译变慢. 这降低了Bevy的编译速度,在开发中很烦人.
 
 ---
 
-With the advice at the top of this page, you don't need to build with
-`--release`, just to test your game with adequate performance. You can use
-it for *actual* release builds that you send to your users.
+根据本页顶部的建议, 你不需要使用`--release`构建, 只是为了用充足的性能测试你的游戏的话.
+你只需要在要发布给你的用户时再release构建就行.
 
-If you want, you can also enable LTO (Link-Time-Optimization) for the actual
-release builds, to squeeze out even more performance at the cost of very
-slow compile times:
+如果你想,也可以为release构建启用LTO (Link-Time-Optimization) ,用编译速度换取更高的性能:
 
 ```toml
 [profile.release]

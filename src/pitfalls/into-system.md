@@ -1,27 +1,25 @@
 {{#include ../include/header011.md}}
 
-# Obscure Rust compiler errors
+# 难懂 Rust 编译错误
 
-You can get confusing compiler errors when you try to add [systems][cb::system]
-to your Bevy [app][cb::app].
+在给Bevy [app][cb::app]添加[systems][cb::system]时, 你可能会遇到令人困惑的编译错误.
 
-## Common beginner mistakes
+## 初学者常见错误
 
-  - Using `commands: &mut Commands` instead of `mut commands: Commands`.
-  - Using `Query<MyStuff>` instead of `Query<&MyStuff>` or `Query<&mut MyStuff>`.
-  - Using `Query<&ComponentA, &ComponentB>` instead of `Query<(&ComponentA, &ComponentB)>`
-    (forgetting the tuple)
-  - Using your resource types directly without [`Res`][bevy::Res] or [`ResMut`][bevy::ResMut].
-  - Using your component types directly without putting them in a [`Query`][bevy::Query].
-  - Using a [bundle][cb::bundle] type in a [query][cb::query]. You want individual components.
-  - Using other arbitrary types in your function.
+  - 用了 `commands: &mut Commands` 而不是 `mut commands: Commands`.
+  - 用了 `Query<MyStuff>` 而不是 `Query<&MyStuff>` 或 `Query<&mut MyStuff>`.
+  - 用了 `Query<&ComponentA, &ComponentB>` 而不是 `Query<(&ComponentA, &ComponentB)>`
+    (忘记了元组)
+  - 直接用了你的resource类型, 没有用 [`Res`][bevy::Res] 或 [`ResMut`][bevy::ResMut] .
+  - 直接使用你的component类型, 没有放进 [`Query`][bevy::Query].
+  - 在[query][cb::query] 中使用 [bundle][cb::bundle] 类型 . 你需要单独的component,
+  - 在函数中使用其他类型.
 
-Note that `Query<Entity>` is correct, because the Entity ID is special;
-it is not a component.
+注意 `Query<Entity>` 是对的, 因为 Entity ID 是特殊的; 它不是component.
 
 ## Error adding function as system
 
-The errors can look like this:
+错误可能如下:
 
 ```
 error[E0277]: the trait bound `for<'a, 'b, 'c> fn(...) {system}: IntoSystem<(), (), _>` is not satisfied
@@ -42,9 +40,9 @@ but in reality, the problem is actually in the `fn` function definition!
 This is caused by your function having invalid parameters. [Bevy can
 only accept special types as system parameters!][builtins::systemparam]
 
-## Error on malformed queries
+## query格式不正确
 
-You might also errors that look like this:
+您可能还会出现如下所示的错误:
 
 ```
 error[E0277]: the trait bound `Transform: WorldQuery` is not satisfied
@@ -70,7 +68,7 @@ note: required by a bound in `bevy::prelude::Query`
     |                                     ^^^^^^^^^^ required by this bound in `Query`
 ```
 
-To access your components, you need to use reference syntax (`&` or `&mut`).
+为了访问你的component, 你需要使用引用语法 (`&` 或 `&mut`).
 
 ```
 error[E0107]: struct takes at most 2 generic arguments but 3 generic arguments were supplied
@@ -88,5 +86,5 @@ note: struct defined here, with at most 2 generic parameters: `Q`, `F`
     |            ^^^^^                 -              --------------------------
 ```
 
-When you want to query for multiple components, you need to put them in a tuple:
+当你想对多个component使用query,你需要把他们放进元组:
 `(&Transform, &Camera, &GlobalTransform)`.

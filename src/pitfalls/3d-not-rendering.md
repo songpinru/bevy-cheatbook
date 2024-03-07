@@ -1,100 +1,80 @@
 {{#include ../include/header011.md}}
 
-# 3D objects not displaying
+# 3D 对象不展示
 
-This page will list some common issues that you may encounter, if you are
-trying to spawn a 3D object, but cannot see it on the screen.
+这页列出了一些可能常见的问题,如果你生成3D对象,但是屏幕上没有显示.
 
-## Missing visibility components on parent
+## 忘记给父实体设置可见型组件
 
-If your entity is in a hierarchy, all its parents need to have
-[visibility][cb::visibility] components. It is required even if those parent
-entities are not supposed to render anything.
+如果你的实体有层次结构,所有的父实体都需要[可见性][cb::visibility] component. 即使父实体不需要渲染东西.
 
-Fix it by inserting a [`VisibilityBundle`][bevy::VisibilityBundle]:
+通过插入 [`VisibilityBundle`][bevy::VisibilityBundle] 来修复:
 
 ```rust
 {{#include ../code011/src/pitfalls/d3_not_rendering.rs:insert-visibilitybundle}}
 ```
 
-Or better, make sure to spawn the parent entities correctly in the first place.
-You can use a [`VisibilityBundle`][bevy::VisibilityBundle] or
-[`SpatialBundle`][bevy::SpatialBundle] (with [transforms][cb::transform]) if you
-are not using a bundle that already includes these components.
+更好的做法是确保首先生成正确的父实体. 如果你没有用包含可见性component的bundle,你可以用[`VisibilityBundle`][bevy::VisibilityBundle] 或
 
-## Too far from camera
+## 离相机太远
 
-If something is further away than a certain distance from the camera, it will be
-culled (not rendered). The default value is `1000.0` units.
+如果某些东西超过相机一定距离,会被剔除(未渲染). 默认值是`1000.0`单位. 
 
-You can control this using the `far` field of
-[`PerspectiveProjection`][bevy::PerspectiveProjection]:
+可以通过[`PerspectiveProjection`][bevy::PerspectiveProjection] 中的 `far`字段来控制:
 
 ```rust
 {{#include ../code011/src/pitfalls/d3_not_rendering.rs:perspective-far}}
 ```
 
-## Missing Vertex Attributes
+## 缺失vertex属性
 
-Make sure your [`Mesh`][bevy::Mesh] includes all vertex attributes required
-by your shader/material.
+确保[`Mesh`][bevy::Mesh]包含所有 着色器/材质 所需vertex属性.
 
-Bevy's default PBR [`StandardMaterial`][bevy::StandardMaterial]
-requires *all* meshes to have:
- - Positions
- - Normals
+Bevy 的默认 PBR [`StandardMaterial`][bevy::StandardMaterial] 要求所有mesh有:
+ - 位置
+ - 法线
 
-Some others that may be required:
- - UVs (if using textures in the material)
- - Tangents (only if using normal maps, otherwise not required)
+其他材质可能需要:
+ - UV (如果材质需要纹理)
+ - 切线 (仅当使用法线贴图时，否则不需要)
 
-If you are generating your own mesh data, make sure to provide everything
-you need.
+如果你要生成自己的mesh数据, 确保提供所有需要的属性.
 
-If you are loading meshes from asset files, make sure they include everything
-that is needed (check your export settings).
+如果从资源文件加载mesh, 确保他们包含所需属性(检查你的导出设置).
 
-If you need Tangents for normal maps, it is recommended that you include them
-in your GLTF files. This avoids Bevy having to autogenerate them at runtime.
-Many 3D editors (like Blender) do not enable this option by default.
+如果需要法线贴图的切线，建议包含属性在您的 GLTF 文件中。这避免了 Bevy 必须在运行时自动生成它们。 
+默认情况下，许多 3D 编辑器（如 Blender）不启用此选项。
 
-## Incorrect usage of Bevy GLTF assets
+## GLTF 资源使用不当
 
-Refer to the [GLTF page][cb::gltf] to learn how to correctly
-use GLTF with Bevy.
+请参阅 [GLTF page][cb::gltf] 学习如何正确在Bevy使用GLTF.
 
-GLTF files are complex. They contain many sub-assets, represented by
-different Bevy types. Make sure you are using the correct thing.
+GLTF文件很复杂. 包含许多子资源, 用不同的Rust类型表示. 确认你用对了.
 
-Make sure you are spawning a GLTF Scene, or using the correct
-[`Mesh`][bevy::Mesh] and [`StandardMaterial`][bevy::StandardMaterial]
-associated with the correct GLTF Primitive.
+确认你在生成一个GLTF Scene,或者使用了正确的 [`Mesh`][bevy::Mesh] 和 [`StandardMaterial`][bevy::StandardMaterial] , 以及相关GLTF Primitive.
 
-If you are using an asset path, be sure to include a label for the sub-asset you want:
+如果你使用的是资源路径, 确认你包括了子资源的标签:
 
 ```rust,no_run,noplayground
 {{#include ../code011/src/pitfalls/d3_not_rendering.rs:gltf-ass-label}}
 ```
 
-If you are spawning the top-level [`Gltf`][bevy::Gltf] [master asset][cb::gltf-master], it won't work.
+如果你在生成高级 [`Gltf`][bevy::Gltf] [master asset][cb::gltf-master], 它将不起作用.
 
-If you are spawning a GLTF Mesh, it won't work.
+如果你生成 GLTF Mesh, 它将不起作用.
 
-## Unsupported GLTF
+## 不支持 GLTF
 
 {{#include ../include/gltf-limitations.md}}
 
 ## Vertex Order and Culling
 
-By default, the Bevy renderer assumes Counter-Clockwise vertex order and has
-back-face culling enabled.
+默认情况下，Bevy 渲染器采用逆时针顶点顺序，并启用背面剔除。
 
-If you are generating your [`Mesh`][bevy::Mesh] from code, make sure your
-vertices are in the correct order.
+如果您从代码生成[`Mesh`][bevy::Mesh]，请确保顶点的顺序正确。
 
-## Unoptimized / Debug builds
+## 未优化 / Debug 构建
 
-Maybe your asset just takes a while to load? Bevy is very slow without
-compiler optimizations. It's actually possible that complex GLTF files with
-big textures can take over a minute to load and show up on the screen. It
-would be almost instant in optimized builds. [See here][pitfall::perf].
+你的资源可能很长时间才加载? 没有编译优化的Bevy运行很慢. 
+拥有大量纹理的复杂GLTF文件可能会花费几分钟才能加载完显示在屏幕上.
+优化后可能是即时完成. [看这里][pitfall::perf].
